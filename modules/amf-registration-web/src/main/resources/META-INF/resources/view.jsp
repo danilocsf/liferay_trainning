@@ -1,6 +1,20 @@
 <%@ include file="/init.jsp" %>
 <%@ page import="java.util.Date" %>
 
+<liferay-ui:success key="userAdded" message="user-added" />
+<liferay-ui:success key="firstNameRequired" message="first-name-required" />
+<liferay-ui:success key="firstNameMaxLenght" message="first-name-max-length"/>
+<liferay-ui:success key="emailRequired" message="email-required"/>
+<liferay-ui:success key="emailMaxLenght" message="email-max-length"/>
+<liferay-ui:success key="emailAddressInvalid" message="email-address-invalid"/>
+<liferay-ui:success key="userNameRequired" message="user-name-required"/>
+<liferay-ui:success key="userNameLength" message="user-name-length"/>
+<liferay-ui:success key="userNameExists" message="user-name-exists"/>
+<liferay-ui:success key="genderRequired" message="gender-required"/>
+<liferay-ui:success key="birthdayRequired" message="birthday-required"/>
+<liferay-ui:success key="birthday-invalid" message="birthdayInvalid"/>
+<liferay-ui:success key="age-invalid" message="ageInvalid"/>
+
 <%
     Date today = new Date();
     int day = today.getDate();

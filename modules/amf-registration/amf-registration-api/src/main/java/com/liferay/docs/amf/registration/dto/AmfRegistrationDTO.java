@@ -22,16 +22,14 @@ public class AmfRegistrationDTO {
     private String securityQuestion;
     private String answer;
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getFirstName() { return firstName == null ? null : firstName.trim(); }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName == null ? null : lastName.trim();
     }
 
     public void setLastName(String lastName) {
@@ -39,7 +37,7 @@ public class AmfRegistrationDTO {
     }
 
     public String getEmail() {
-        return email;
+        return email == null ? null : email.trim();
     }
 
     public void setEmail(String email) {
@@ -47,7 +45,7 @@ public class AmfRegistrationDTO {
     }
 
     public String getUserName() {
-        return userName;
+        return userName == null ? null : userName.trim();
     }
 
     public void setUserName(String userName) {
@@ -55,7 +53,7 @@ public class AmfRegistrationDTO {
     }
 
     public String getGender() {
-        return gender;
+        return gender == null ? null : gender.trim();
     }
 
     public void setGender(String gender) {
@@ -103,7 +101,7 @@ public class AmfRegistrationDTO {
     }
 
     public String getHomePhone() {
-        return homePhone;
+        return homePhone == null ? null : homePhone.trim();
     }
 
     public void setHomePhone(String homePhone) {
@@ -111,7 +109,7 @@ public class AmfRegistrationDTO {
     }
 
     public String getMobilePhone() {
-        return mobilePhone;
+        return mobilePhone == null ? null : mobilePhone.trim();
     }
 
     public void setMobilePhone(String mobilePhone) {
@@ -119,40 +117,30 @@ public class AmfRegistrationDTO {
     }
 
     public String getAddress1() {
-        return address1;
+        return address1 == null ? null : address1.trim();
     }
 
     public void setAddress1(String address1) {
         this.address1 = address1;
     }
 
-    public String getAddress2() {
-        return address2;
-    }
+    public String getAddress2() { return address2 == null ? null : address2.trim(); }
 
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
+    public void setAddress2(String address2) { this.address2 = address2; }
 
-    public String getCity() {
-        return city;
-    }
+    public String getCity() { return city == null ? null : city.trim(); }
 
     public void setCity(String city) {
         this.city = city;
     }
 
-    public String getZipCode() {
-        return zipCode;
-    }
+    public String getZipCode() { return zipCode == null ? null : zipCode.trim(); }
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
-    public String getState() {
-        return state;
-    }
+    public String getState() { return state == null ? null : state.trim(); }
 
     public void setState(String state) {
         this.state = state;
@@ -166,9 +154,7 @@ public class AmfRegistrationDTO {
         this.securityQuestion = securityQuestion;
     }
 
-    public String getAnswer() {
-        return answer;
-    }
+    public String getAnswer() { return answer == null ? null : answer.trim();}
 
     public void setAnswer(String answer) {
         this.answer = answer;
