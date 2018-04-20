@@ -9,7 +9,7 @@
 %>
 
 
-<portlet:actionURL name="saveRegister" var="saveRegisterURL"></portlet:actionURL>
+<portlet:actionURL name="saveUserRegister" var="saveRegisterURL"></portlet:actionURL>
 
 <aui:form action="<%= saveRegisterURL %>" name="<portlet:namespace />fm" >
 

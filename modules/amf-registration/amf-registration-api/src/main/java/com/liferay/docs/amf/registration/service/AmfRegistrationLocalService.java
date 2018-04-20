@@ -16,9 +16,12 @@ package com.liferay.docs.amf.registration.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.docs.amf.registration.dto.AmfRegistrationDTO;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
@@ -50,4 +53,7 @@ public interface AmfRegistrationLocalService extends BaseLocalService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public void saveUserRegister(AmfRegistrationDTO userData,
+		ServiceContext serviceContext) throws PortalException;
 }

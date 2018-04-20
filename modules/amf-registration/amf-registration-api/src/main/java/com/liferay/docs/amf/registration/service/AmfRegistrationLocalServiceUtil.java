@@ -51,6 +51,13 @@ public class AmfRegistrationLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void saveUserRegister(
+		com.liferay.docs.amf.registration.dto.AmfRegistrationDTO userData,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().saveUserRegister(userData, serviceContext);
+	}
+
 	public static AmfRegistrationLocalService getService() {
 		return _serviceTracker.getService();
 	}

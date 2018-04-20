@@ -45,6 +45,14 @@ public class AmfRegistrationLocalServiceWrapper
 	}
 
 	@Override
+	public void saveUserRegister(
+		com.liferay.docs.amf.registration.dto.AmfRegistrationDTO userData,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_amfRegistrationLocalService.saveUserRegister(userData, serviceContext);
+	}
+
+	@Override
 	public AmfRegistrationLocalService getWrappedService() {
 		return _amfRegistrationLocalService;
 	}

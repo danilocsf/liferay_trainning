@@ -14,6 +14,7 @@
 
 package com.liferay.docs.amf.registration.service.impl;
 
+import com.liferay.docs.amf.registration.dto.AmfRegistrationDTO;
 import com.liferay.docs.amf.registration.service.base.AmfRegistrationServiceBaseImpl;
 
 /**

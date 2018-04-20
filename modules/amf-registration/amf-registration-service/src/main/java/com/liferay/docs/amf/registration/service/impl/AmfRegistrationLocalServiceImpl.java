@@ -14,7 +14,10 @@
 
 package com.liferay.docs.amf.registration.service.impl;
 
+import com.liferay.docs.amf.registration.dto.AmfRegistrationDTO;
 import com.liferay.docs.amf.registration.service.base.AmfRegistrationLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 /**
  * The implementation of the amf registration local service.
@@ -37,4 +40,10 @@ public class AmfRegistrationLocalServiceImpl
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.docs.amf.registration.service.AmfRegistrationLocalServiceUtil} to access the amf registration local service.
 	 */
+	public void saveUserRegister(AmfRegistrationDTO userData, ServiceContext serviceContext)
+			throws PortalException {
+
+
+	}
+
 }
