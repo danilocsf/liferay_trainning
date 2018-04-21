@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -14,19 +14,17 @@
 
 package com.liferay.docs.amf.registration.service.impl;
 
+import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.docs.amf.registration.dto.AmfRegistrationDTO;
 import com.liferay.docs.amf.registration.exception.AmfRegistrationException;
 import com.liferay.docs.amf.registration.service.base.AmfRegistrationLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Region;
-import com.liferay.portal.kernel.service.RegionServiceUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.model.*;
+import com.liferay.portal.kernel.service.*;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,51 +43,99 @@ import java.util.regex.Pattern;
  * @see com.liferay.docs.amf.registration.service.AmfRegistrationLocalServiceUtil
  */
 public class AmfRegistrationLocalServiceImpl
-	extends AmfRegistrationLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use {@link com.liferay.docs.amf.registration.service.AmfRegistrationLocalServiceUtil} to access the amf registration local service.
-	 */
-	public void saveUserRegister(AmfRegistrationDTO userData, ServiceContext serviceContext)
-			throws PortalException {
+        extends AmfRegistrationLocalServiceBaseImpl {
+    /*
+     * NOTE FOR DEVELOPERS:
+     *
+     * Never reference this class directly. Always use {@link com.liferay.docs.amf.registration.service.AmfRegistrationLocalServiceUtil} to access the amf registration local service.
+     */
+    public void saveUserRegister(AmfRegistrationDTO userData, ServiceContext serviceContext)
+            throws PortalException {
 
-	    validateUserData(userData);
-        List<Region> regions =  RegionServiceUtil.getRegions(19l);
-        //regions.get(0).get
-
-	}
-
-    private void validateUserData(AmfRegistrationDTO userData) throws AmfRegistrationException {
-        validateFieldContent(userData);
+        validateUserData(userData);
+        User user = createuser(userData, serviceContext);
+        createAddress(user, userData, serviceContext);
+        createPhones(user, userData, serviceContext);
     }
 
-    private void validateFieldContent(AmfRegistrationDTO userData) throws AmfRegistrationException{
+    private User createuser(AmfRegistrationDTO userData, ServiceContext serviceContext) throws PortalException {
+
+        User user = UserLocalServiceUtil.addUser(0, userData.getCompanyId(), false, userData.getPassword(),
+                userData.getPasswordToConfirm(),false, userData.getUserName(), userData.getEmail(), 0,
+                null, userData.getLocale(), userData.getFirstName(), null,userData.getLastName(),
+                0, 0, "Male".equals(userData.getGender()), userData.getBirthdayMonth(),
+                userData.getBirthdayDay(), userData.getBirthdayYear(),null, null, null,
+                null, null, false, serviceContext);
+
+        UserLocalServiceUtil.updateReminderQuery(user.getUserId(), userData.getSecurityQuestion(), userData.getAnswer());
+        UserLocalServiceUtil.updateAgreedToTermsOfUse(user.getUserId(), userData.getAcceptedTOU());
+        return user;
+    }
+
+    private Address createAddress(User user, AmfRegistrationDTO userData, ServiceContext serviceContext) throws PortalException {
+        Address address = AddressLocalServiceUtil.addAddress(user.getUserId(), Contact.class.getName(), user.getContactId(),
+                userData.getAddress1(), userData.getAddress2(),
+                null, userData.getCity(), userData.getZipCode(),
+                userData.getState(), 19, 11002, true,
+                true, serviceContext);
+        return address;
+    }
+
+    private List<Phone> createPhones(User user, AmfRegistrationDTO userData, ServiceContext serviceContext) throws PortalException {
+        List<Phone>phones = new ArrayList<Phone>();
+        if(Validator.isNotNull(userData.getHomePhone())) {
+            phones.add(createPhone(userData.getHomePhone(), 11011l, user.getUserId(), true, user.getContactId(), serviceContext));
+        }
+
+        if(Validator.isNotNull(userData.getMobilePhone())) {
+            phones.add(createPhone(userData.getMobilePhone(), 11008l, user.getUserId(), false, user.getContactId(), serviceContext));
+        }
+
+        return phones;
+    }
+
+    private Phone createPhone(String number, Long typeId, Long userId, boolean primary, Long contactId,
+                              ServiceContext serviceContext) throws PortalException {
+        return PhoneLocalServiceUtil.addPhone(userId,
+                Contact.class.getName(), contactId, number, null, typeId, primary, serviceContext);
+    }
+
+    private void validateUserData(AmfRegistrationDTO userData) throws PortalException {
+        validateFieldContent(userData);
+        try {
+            User user = UserLocalServiceUtil.getUserByScreenName(userData.getCompanyId(), userData.getUserName());
+            throw new AmfRegistrationException(Arrays.asList("userNameAlreadyExists"));
+        } catch (NoSuchUserException e) {
+
+        }
+    }
+
+    private void validateFieldContent(AmfRegistrationDTO userData) throws AmfRegistrationException {
         List<String> errors = new ArrayList<String>();
         validateBasicInfo(userData, errors);
         validatePhone(userData, errors);
         validateBillingAddress(userData, errors);
         validateMisc(userData, errors);
-        if(!Boolean.TRUE.equals(userData.getAcceptedTOU())){
+        if (!Boolean.TRUE.equals(userData.getAcceptedTOU())) {
             errors.add("acceptTouRequired");
         }
-        if(!errors.isEmpty()){
+        if (!errors.isEmpty()) {
             throw new AmfRegistrationException(errors);
         }
     }
 
-    private void validateBasicInfo(AmfRegistrationDTO userData, List<String> errors){
+    private void validateBasicInfo(AmfRegistrationDTO userData, List<String> errors) {
         validateFieldContent(userData.getFirstName(), errors, true, 50, "firstNameRequired", "firstNameMaxLength");
         validateFieldContent(userData.getLastName(), errors, true, 50, "lastNameRequired", "lastNameMaxLength");
         validateFieldContent(userData.getGender(), errors, true, 0, "genderRequired", "");
-        if(validateFieldContent(userData.getEmail(), errors, true, 255, "emailRequired", "emailMaxLength")){
-            if(!Validator.isEmailAddress(userData.getEmail())){
+        if (validateFieldContent(userData.getEmail(), errors, true, 255, "emailRequired", "emailMaxLength")) {
+            if (!Validator.isEmailAddress(userData.getEmail())) {
                 errors.add("emailAddressInvalid");
             }
         }
 
-        if(validateFieldContent(userData.getUserName(), errors, true, 16, "userNameRequired", "userNameLength")){
-            if(userData.getUserName().length()< 5){
+        if (validateFieldContent(userData.getUserName(), errors, true, 16, "userNameRequired", "userNameLength")) {
+            if (userData.getUserName().length() < 5) {
                 errors.add("userNameLength");
             }
         }
@@ -97,21 +143,21 @@ public class AmfRegistrationLocalServiceImpl
         validatePassword(userData.getPassword(), userData.getPasswordToConfirm(), errors);
     }
 
-    private void validatePhone(AmfRegistrationDTO userData, List<String> errors){
+    private void validatePhone(AmfRegistrationDTO userData, List<String> errors) {
         validatePhone(userData.getHomePhone(), errors, "homePhoneInvalid");
         validatePhone(userData.getMobilePhone(), errors, "mobilePhoneInvalid");
     }
 
-    private void validateBillingAddress(AmfRegistrationDTO userData, List<String> errors){
+    private void validateBillingAddress(AmfRegistrationDTO userData, List<String> errors) {
         validateFieldContent(userData.getAddress1(), errors, true, 255, "addressRequired", "addressMaxLength");
         validateFieldContent(userData.getAddress2(), errors, false, 255, "address2Required", "address2MaxLength");
         validateFieldContent(userData.getCity(), errors, true, 255, "cityRequired", "cityMaxLength");
-        if(validateFieldContent(userData.getZipCode(), errors, true, 5, "zipCodeRequired", "zipCodeInvalid")){
-            if(!Validator.isDigit(userData.getZipCode())){
+        if (validateFieldContent(userData.getZipCode(), errors, true, 5, "zipCodeRequired", "zipCodeInvalid")) {
+            if (!Validator.isDigit(userData.getZipCode())) {
                 errors.add("zipCodeInvalid");
             }
         }
-        if(userData.getState() == null){
+        if (userData.getState() == null) {
             errors.add("stateRequired");
         }
     }
@@ -120,32 +166,32 @@ public class AmfRegistrationLocalServiceImpl
         validateFieldContent(userData.getAnswer(), errors, true, 75, "answerRequired", "answerMaxLength");
     }
 
-    private void validatePhone(String phone, List<String> errors, String errorKey){
-        if(!Validator.isBlank(phone) && Validator.isDigit(phone) && phone.length() == 10){
+    private void validatePhone(String phone, List<String> errors, String errorKey) {
+        if (!Validator.isBlank(phone) && (!Validator.isDigit(phone) || phone.length() != 10)) {
             errors.add(errorKey);
         }
     }
 
-    private void validatePassword(String password, String password2, List<String> errors){
-        if(Validator.isBlank(password)){
+    private void validatePassword(String password, String password2, List<String> errors) {
+        if (Validator.isBlank(password)) {
             errors.add("passwordRequired");
-        }else {
+        } else {
             Pattern pattern = Pattern.compile("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&*]).{6,20})");
-            Matcher matcher = pattern.matcher("password");
-            if(!matcher.matches()){
+            Matcher matcher = pattern.matcher(password);
+            if (!matcher.matches()) {
                 errors.add("passwordInvalid");
-            }else{
-                if(!password.equals(password2)){
+            } else {
+                if (!password.equals(password2)) {
                     errors.add("passwordMustMatch");
                 }
             }
         }
     }
 
-    private void validateBirthday(int birthdayMonth, int birthdayDay, int birthdayYear, List<String> errors){
-        if(birthdayDay == 0 || birthdayMonth == 0 || birthdayYear == 0){
+    private void validateBirthday(int birthdayMonth, int birthdayDay, int birthdayYear, List<String> errors) {
+        if (birthdayDay == 0 || birthdayMonth == 0 || birthdayYear == 0) {
             errors.add("birthdayRequired");
-        } else if(!Validator.isDate(birthdayMonth, birthdayDay, birthdayYear)){
+        } else if (!Validator.isDate(birthdayMonth, birthdayDay, birthdayYear)) {
             errors.add("birthdayInvalid");
         } else {
             Calendar thirteenYearsAgo = Calendar.getInstance();
@@ -153,9 +199,9 @@ public class AmfRegistrationLocalServiceImpl
             thirteenYearsAgo.add(Calendar.YEAR, -13);
 
             Calendar birthday = Calendar.getInstance();
-            birthday.set(birthdayYear, birthdayMonth-1, birthdayDay);
+            birthday.set(birthdayYear, birthdayMonth - 1, birthdayDay);
 
-            if(birthday.compareTo(thirteenYearsAgo) > 0){
+            if (birthday.compareTo(thirteenYearsAgo) > 0) {
                 errors.add("ageInvalid");
             }
         }
@@ -163,7 +209,7 @@ public class AmfRegistrationLocalServiceImpl
 
     private boolean validateFieldContent(String data, List<String> errors, boolean isRequired, int maxLength, String mandatoryKey, String lengthKey) {
         boolean ok = true;
-	    if (Validator.isBlank(data)) {
+        if (Validator.isBlank(data)) {
             if (isRequired) {
                 errors.add(mandatoryKey);
                 ok = false;

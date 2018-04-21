@@ -1,5 +1,7 @@
 package com.liferay.docs.amf.registration.dto;
 
+import java.util.Locale;
+
 public class AmfRegistrationDTO {
 
     private String firstName;
@@ -22,6 +24,8 @@ public class AmfRegistrationDTO {
     private String securityQuestion;
     private String answer;
     private Boolean acceptedTOU;
+    private Long companyId;
+    private Locale locale;
 
     public String getFirstName() {
         return firstName == null ? null : firstName.trim();
@@ -182,4 +186,12 @@ public class AmfRegistrationDTO {
     public void setAcceptedTOU(Boolean acceptedTOU) {
         this.acceptedTOU = acceptedTOU;
     }
+
+    public Long getCompanyId() { return companyId; }
+
+    public void setCompanyId(Long companyId) { this.companyId = companyId; }
+
+    public Locale getLocale() { return locale; }
+
+    public void setLocale(Locale locale) { this.locale = locale; }
 }

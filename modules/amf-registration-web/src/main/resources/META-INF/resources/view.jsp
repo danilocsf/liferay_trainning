@@ -36,6 +36,7 @@
 <liferay-ui:error key="answerRequired" message="answer-required"/>
 <liferay-ui:error key="answerMaxLength" message="answer-maxLength"/>
 <liferay-ui:error key="acceptTouRequired" message="accept-tou-required"/>
+<liferay-ui:error key="userNameAlreadyExists" message="user-name-already-exists"/>
 
 
 <%

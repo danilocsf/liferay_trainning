@@ -18,7 +18,9 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -46,11 +48,13 @@ public class AmfRegistrationPortlet extends MVCPortlet {
         ServiceContext serviceContext = ServiceContextFactory.getInstance(
                 User.class.getName(), request);
 
+
         AmfRegistrationDTO userData = getUserRegisterData(request);
         try {
             AmfRegistrationLocalServiceUtil.saveUserRegister(userData, serviceContext);
             SessionMessages.add(request, "userAdded");
         }catch(AmfRegistrationException e){
+            SessionErrors.clear(request);
             for(String code : e.getMsgCodes()){
                 SessionErrors.add(request, code);
             }
@@ -60,9 +64,8 @@ public class AmfRegistrationPortlet extends MVCPortlet {
     }
 
     private AmfRegistrationDTO getUserRegisterData(ActionRequest request) {
-
+        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
         AmfRegistrationDTO user = new AmfRegistrationDTO();
-
         user.setFirstName(ParamUtil.getString(request, "first_name"));
         user.setLastName(ParamUtil.getString(request, "last_name"));
         user.setEmail(ParamUtil.getString(request, "email_address"));
@@ -82,7 +85,10 @@ public class AmfRegistrationPortlet extends MVCPortlet {
         user.setZipCode(ParamUtil.getString(request, "zip"));
         user.setSecurityQuestion(ParamUtil.getString(request, "security_question"));
         user.setAnswer(ParamUtil.getString(request, "security_answer"));
-
+        user.setCompanyId(themeDisplay.getCompanyId());
+        user.setLocale(themeDisplay.getLocale());
+        String accepted = ParamUtil.getString(request, "accepted_tou");
+        user.setAcceptedTOU("true".equals(accepted));
         return user;
     }
 }
