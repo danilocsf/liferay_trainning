@@ -32,7 +32,7 @@ public class AmfRegistrationException extends PortalException {
         msgCodes.add(code);
     }
 
-    public List<String> getMsgCodes(String code){
+    public List<String> getMsgCodes(){
         return msgCodes;
     }
 

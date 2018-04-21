@@ -18,11 +18,14 @@ public class AmfRegistrationDTO {
     private String address2;
     private String city;
     private String zipCode;
-    private String state;
+    private Long state;
     private String securityQuestion;
     private String answer;
+    private Boolean acceptedTOU;
 
-    public String getFirstName() { return firstName == null ? null : firstName.trim(); }
+    public String getFirstName() {
+        return firstName == null ? null : firstName.trim();
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -124,25 +127,35 @@ public class AmfRegistrationDTO {
         this.address1 = address1;
     }
 
-    public String getAddress2() { return address2 == null ? null : address2.trim(); }
+    public String getAddress2() {
+        return address2 == null ? null : address2.trim();
+    }
 
-    public void setAddress2(String address2) { this.address2 = address2; }
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
 
-    public String getCity() { return city == null ? null : city.trim(); }
+    public String getCity() {
+        return city == null ? null : city.trim();
+    }
 
     public void setCity(String city) {
         this.city = city;
     }
 
-    public String getZipCode() { return zipCode == null ? null : zipCode.trim(); }
+    public String getZipCode() {
+        return zipCode == null ? null : zipCode.trim();
+    }
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
-    public String getState() { return state == null ? null : state.trim(); }
+    public Long getState() {
+        return state;
+    }
 
-    public void setState(String state) {
+    public void setState(Long state) {
         this.state = state;
     }
 
@@ -154,9 +167,19 @@ public class AmfRegistrationDTO {
         this.securityQuestion = securityQuestion;
     }
 
-    public String getAnswer() { return answer == null ? null : answer.trim();}
+    public String getAnswer() {
+        return answer == null ? null : answer.trim();
+    }
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public Boolean getAcceptedTOU() {
+        return acceptedTOU;
+    }
+
+    public void setAcceptedTOU(Boolean acceptedTOU) {
+        this.acceptedTOU = acceptedTOU;
     }
 }

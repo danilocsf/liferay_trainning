@@ -3,6 +3,7 @@ package com.liferay.docs.amf.registration.portlet;
 import com.liferay.docs.amf.registration.constants.AmfRegistrationPortletKeys;
 
 import com.liferay.docs.amf.registration.dto.AmfRegistrationDTO;
+import com.liferay.docs.amf.registration.exception.AmfRegistrationException;
 import com.liferay.docs.amf.registration.service.AmfRegistrationLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -15,6 +16,7 @@ import javax.portlet.Portlet;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import org.osgi.service.component.annotations.Component;
@@ -45,8 +47,15 @@ public class AmfRegistrationPortlet extends MVCPortlet {
                 User.class.getName(), request);
 
         AmfRegistrationDTO userData = getUserRegisterData(request);
-        AmfRegistrationLocalServiceUtil.saveUserRegister(userData, serviceContext);
-        SessionMessages.add(request, "userAdded");
+        try {
+            AmfRegistrationLocalServiceUtil.saveUserRegister(userData, serviceContext);
+            SessionMessages.add(request, "userAdded");
+        }catch(AmfRegistrationException e){
+            for(String code : e.getMsgCodes()){
+                SessionErrors.add(request, code);
+            }
+        }
+
 
     }
 
@@ -69,7 +78,7 @@ public class AmfRegistrationPortlet extends MVCPortlet {
         user.setAddress1(ParamUtil.getString(request, "address"));
         user.setAddress2(ParamUtil.getString(request, "address2"));
         user.setCity(ParamUtil.getString(request, "city"));
-        user.setState(ParamUtil.getString(request, "state"));
+        user.setState(ParamUtil.getLong(request, "state"));
         user.setZipCode(ParamUtil.getString(request, "zip"));
         user.setSecurityQuestion(ParamUtil.getString(request, "security_question"));
         user.setAnswer(ParamUtil.getString(request, "security_answer"));
