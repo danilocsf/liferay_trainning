@@ -39,7 +39,7 @@
 <liferay-ui:error key="acceptTouRequired" message="accept-tou-required"/>
 <liferay-ui:error key="userNameAlreadyExists" message="user-name-already-exists"/>
 
-<portlet:renderURL var="signupURL">
+<portlet:renderURL var="editEntryURL">
     <portlet:param name="mvcRenderCommandName" value="/signup" />
 </portlet:renderURL>
 
