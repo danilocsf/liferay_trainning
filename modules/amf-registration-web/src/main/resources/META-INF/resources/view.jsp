@@ -4,6 +4,7 @@
 <%@ page import="com.liferay.portal.kernel.model.Region" %>
 <%@ page import="com.liferay.portal.kernel.service.RegionServiceUtil" %>
 
+
 <liferay-ui:success key="userAdded" message="user-added" />
 <liferay-ui:error key="firstNameRequired" message="first-name-required" />
 <liferay-ui:error key="firstNameMaxLenght" message="first-name-max-length"/>
@@ -45,7 +46,7 @@
     int year = today.getYear()+1900;
     int month = today.getMonth();
 
-     List<Region> regions =  RegionServiceUtil.getRegions(19l);
+    List<Region> regions =  RegionServiceUtil.getRegions(19l);
 %>
 
 
@@ -53,6 +54,11 @@
 
 <aui:form action="<%= saveRegisterURL %>" name="<portlet:namespace />fm" >
 
+<c:choose>
+  <c:when test = "${sessionScope.signIn != null}">
+    <liferay-ui:message key="user.already.logged.in" />
+  </c:when>
+  <c:otherwise>
     <aui:fieldset-group markupView="lexicon">
         <aui:fieldset label="Basic Info" >
             <aui:input label="First Name" name="first_name" ></aui:input>
@@ -120,4 +126,7 @@
     <aui:button-row>
           <aui:button value="Save" type="submit"></aui:button>
     </aui:button-row>
+  </c:otherwise>
+</c:choose>
+
 </aui:form>

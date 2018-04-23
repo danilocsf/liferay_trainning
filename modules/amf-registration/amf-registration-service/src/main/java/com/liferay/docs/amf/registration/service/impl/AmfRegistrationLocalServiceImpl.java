@@ -14,14 +14,19 @@
 
 package com.liferay.docs.amf.registration.service.impl;
 
-import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.docs.amf.registration.dto.AmfRegistrationDTO;
 import com.liferay.docs.amf.registration.exception.AmfRegistrationException;
 import com.liferay.docs.amf.registration.service.base.AmfRegistrationLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.*;
-import com.liferay.portal.kernel.service.*;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
+import com.liferay.portal.kernel.service.PhoneLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.*;

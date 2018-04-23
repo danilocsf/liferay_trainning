@@ -9,9 +9,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.Portlet;
+import javax.portlet.*;
+import javax.servlet.http.HttpServletRequest;
 
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
@@ -20,8 +19,11 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import org.osgi.service.component.annotations.Component;
+
+import java.io.IOException;
 
 /**
  * @author danilo-ferreira
@@ -31,7 +33,7 @@ import org.osgi.service.component.annotations.Component;
         property = {
                 "com.liferay.portlet.display-category=category.sample",
                 "com.liferay.portlet.instanceable=true",
-                "javax.portlet.display-name=amf-registration-web Portlet",
+                "javax.portlet.display-name=amf-registration",
                 "javax.portlet.init-param.template-path=/",
                 "javax.portlet.init-param.view-template=/view.jsp",
                 "javax.portlet.name=" + AmfRegistrationPortletKeys.AmfRegistration,
@@ -59,8 +61,18 @@ public class AmfRegistrationPortlet extends MVCPortlet {
                 SessionErrors.add(request, code);
             }
         }
+    }
 
+    @Override
+    public void render(RenderRequest request, RenderResponse response)
+            throws PortletException, IOException {
 
+        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+        if (themeDisplay.isSignedIn()) {
+            PortletSession session = request.getPortletSession();
+            session.setAttribute("signIn", true, PortletSession.APPLICATION_SCOPE);
+        }
+        super.render(request, response);
     }
 
     private AmfRegistrationDTO getUserRegisterData(ActionRequest request) {
