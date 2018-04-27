@@ -108,11 +108,19 @@ public class AmfRegistrationLocalServiceImpl
     private void validateUserData(AmfRegistrationDTO userData) throws PortalException {
         validateFieldContent(userData);
         try {
-            User user = UserLocalServiceUtil.getUserByScreenName(userData.getCompanyId(), userData.getUserName());
+            UserLocalServiceUtil.getUserByScreenName(userData.getCompanyId(), userData.getUserName());
             throw new AmfRegistrationException(Arrays.asList("userNameAlreadyExists"));
         } catch (NoSuchUserException e) {
 
         }
+        try {
+            UserLocalServiceUtil.getUserByEmailAddress(userData.getCompanyId(), userData.getEmail());
+            throw new AmfRegistrationException(Arrays.asList("userEmailAlreadyExists"));
+        } catch (NoSuchUserException e) {
+
+        }
+
+
     }
 
     private void validateFieldContent(AmfRegistrationDTO userData) throws AmfRegistrationException {
