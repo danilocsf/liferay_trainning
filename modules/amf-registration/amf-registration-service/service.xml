@@ -8,4 +8,14 @@
     <entity local-service="true" name="AmfRegistration">
 
 	</entity>
+
+    <entity name="AmfRegistrationLog" table="AMF_REGISTRATION_LOG" local-service="true">
+        <column name="logId" type="long" primary="true" id-type="increment"/>
+        <column name="dateTime" type="Date" />
+        <column name="screenName" type="String" />
+        <column name="userId" type="long" />
+        <column name="ipAddress" type="String" />
+        <column name="eventType" type="String" />
+        <column name="additionalInfo" type="String" />
+    </entity>
 </service-builder>

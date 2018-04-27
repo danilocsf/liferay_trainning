@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
+import java.util.*;
+
 /**
  * Provides the local service interface for AmfRegistration. Methods of this
  * service will not have security checks based on the propagated JAAS
