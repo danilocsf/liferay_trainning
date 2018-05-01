@@ -36,6 +36,7 @@ public class PostLoginAction  implements LifecycleAction {
             log.setEventType(AmfRegistrationLogConstants.LOGIN_EVENT);
             log.setIpAddress(request.getRemoteAddr());
             log.setScreenName(user.getScreenName());
+
             log.setUserId(user.getUserId());
 
             AmfRegistrationLogLocalServiceUtil.addLog(log);
