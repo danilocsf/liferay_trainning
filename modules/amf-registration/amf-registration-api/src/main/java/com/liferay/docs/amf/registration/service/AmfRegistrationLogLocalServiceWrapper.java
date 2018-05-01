@@ -53,6 +53,28 @@ public class AmfRegistrationLogLocalServiceWrapper
 		_amfRegistrationLogLocalService.addLog(log);
 	}
 
+	@Override
+	public long countAllLogs() {
+		return _amfRegistrationLogLocalService.countAllLogs();
+	}
+
+	@Override
+	public long countLogsByEventType(java.lang.String eventType) {
+		return _amfRegistrationLogLocalService.countLogsByEventType(eventType);
+	}
+
+	@Override
+	public long countLogsByEventTypeAndUserId(java.lang.String eventType,
+		long userId) {
+		return _amfRegistrationLogLocalService.countLogsByEventTypeAndUserId(eventType,
+			userId);
+	}
+
+	@Override
+	public long countLogsByUserId(long userId) {
+		return _amfRegistrationLogLocalService.countLogsByUserId(userId);
+	}
+
 	/**
 	* Creates a new amf registration log with the primary key. Does not add the amf registration log to the database.
 	*
@@ -190,6 +212,33 @@ public class AmfRegistrationLogLocalServiceWrapper
 	public com.liferay.docs.amf.registration.model.AmfRegistrationLog fetchAmfRegistrationLog(
 		long logId) {
 		return _amfRegistrationLogLocalService.fetchAmfRegistrationLog(logId);
+	}
+
+	@Override
+	public java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findAllLogs(
+		int start, int end) {
+		return _amfRegistrationLogLocalService.findAllLogs(start, end);
+	}
+
+	@Override
+	public java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventType(
+		java.lang.String eventType, int start, int end) {
+		return _amfRegistrationLogLocalService.findLogByEventType(eventType,
+			start, end);
+	}
+
+	@Override
+	public java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventTypeAndUserId(
+		java.lang.String eventType, long userId, int start, int end) {
+		return _amfRegistrationLogLocalService.findLogByEventTypeAndUserId(eventType,
+			userId, start, end);
+	}
+
+	@Override
+	public java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByUserId(
+		long userId, int start, int end) {
+		return _amfRegistrationLogLocalService.findLogByUserId(userId, start,
+			end);
 	}
 
 	@Override

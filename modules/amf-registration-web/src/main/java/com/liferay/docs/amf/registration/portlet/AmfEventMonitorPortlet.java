@@ -19,7 +19,7 @@ import javax.portlet.Portlet;
                 "javax.portlet.init-param.view-template=/event-monitor.jsp",
                 "javax.portlet.name=" + AmfRegistrationPortletKeys.AmfEventMonitor,
                 "javax.portlet.resource-bundle=content.Language",
-                "javax.portlet.security-role-ref=power-user,user,AMF Monitor Event"
+                "javax.portlet.security-role-ref=power-user,user,amf-monitor-event"
         },
         service = Portlet.class
 )

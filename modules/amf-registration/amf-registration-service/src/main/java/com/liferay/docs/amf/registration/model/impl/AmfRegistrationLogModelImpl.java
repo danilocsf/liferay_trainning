@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -91,8 +92,8 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 
 	public static final String TABLE_SQL_CREATE = "create table AMF_REGISTRATION_LOG (logId LONG not null primary key,dateTime DATE null,screenName VARCHAR(75) null,userId LONG,ipAddress VARCHAR(75) null,eventType VARCHAR(75) null,additionalInfo VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table AMF_REGISTRATION_LOG";
-	public static final String ORDER_BY_JPQL = " ORDER BY amfRegistrationLog.logId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY AMF_REGISTRATION_LOG.logId ASC";
+	public static final String ORDER_BY_JPQL = " ORDER BY amfRegistrationLog.dateTime DESC";
+	public static final String ORDER_BY_SQL = " ORDER BY AMF_REGISTRATION_LOG.dateTime DESC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -102,7 +103,12 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.docs.amf.registration.service.util.ServiceProps.get(
 				"value.object.finder.cache.enabled.com.liferay.docs.amf.registration.model.AmfRegistrationLog"),
 			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.docs.amf.registration.service.util.ServiceProps.get(
+				"value.object.column.bitmask.enabled.com.liferay.docs.amf.registration.model.AmfRegistrationLog"),
+			true);
+	public static final long EVENTTYPE_COLUMN_BITMASK = 1L;
+	public static final long USERID_COLUMN_BITMASK = 2L;
+	public static final long DATETIME_COLUMN_BITMASK = 4L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -267,6 +273,8 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 
 	@Override
 	public void setDateTime(Date dateTime) {
+		_columnBitmask = -1L;
+
 		_dateTime = dateTime;
 	}
 
@@ -294,6 +302,14 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= USERID_COLUMN_BITMASK;
+
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -311,6 +327,10 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 
 	@Override
 	public void setUserUuid(String userUuid) {
+	}
+
+	public long getOriginalUserId() {
+		return _originalUserId;
 	}
 
 	@JSON
@@ -342,7 +362,17 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 
 	@Override
 	public void setEventType(String eventType) {
+		_columnBitmask |= EVENTTYPE_COLUMN_BITMASK;
+
+		if (_originalEventType == null) {
+			_originalEventType = _eventType;
+		}
+
 		_eventType = eventType;
+	}
+
+	public String getOriginalEventType() {
+		return GetterUtil.getString(_originalEventType);
 	}
 
 	@JSON
@@ -359,6 +389,10 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 	@Override
 	public void setAdditionalInfo(String additionalInfo) {
 		_additionalInfo = additionalInfo;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -403,17 +437,18 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 
 	@Override
 	public int compareTo(AmfRegistrationLog amfRegistrationLog) {
-		long primaryKey = amfRegistrationLog.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		value = DateUtil.compareTo(getDateTime(),
+				amfRegistrationLog.getDateTime());
+
+		value = value * -1;
+
+		if (value != 0) {
+			return value;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	@Override
@@ -455,6 +490,15 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 
 	@Override
 	public void resetOriginalValues() {
+		AmfRegistrationLogModelImpl amfRegistrationLogModelImpl = this;
+
+		amfRegistrationLogModelImpl._originalUserId = amfRegistrationLogModelImpl._userId;
+
+		amfRegistrationLogModelImpl._setOriginalUserId = false;
+
+		amfRegistrationLogModelImpl._originalEventType = amfRegistrationLogModelImpl._eventType;
+
+		amfRegistrationLogModelImpl._columnBitmask = 0;
 	}
 
 	@Override
@@ -582,8 +626,12 @@ public class AmfRegistrationLogModelImpl extends BaseModelImpl<AmfRegistrationLo
 	private Date _dateTime;
 	private String _screenName;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _ipAddress;
 	private String _eventType;
+	private String _originalEventType;
 	private String _additionalInfo;
+	private long _columnBitmask;
 	private AmfRegistrationLog _escapedModel;
 }

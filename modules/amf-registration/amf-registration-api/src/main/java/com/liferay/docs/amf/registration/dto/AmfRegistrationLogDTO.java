@@ -1,5 +1,6 @@
 package com.liferay.docs.amf.registration.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AmfRegistrationLogDTO {
@@ -57,5 +58,20 @@ public class AmfRegistrationLogDTO {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    @Override
+    public String toString() {
+
+        String formattedDate = "";
+        if (this.dateTime != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            formattedDate = sdf.format(this.dateTime);
+        }
+        StringBuilder str = new StringBuilder();
+        str.append(formattedDate).append(" ").append(this.screenName).append(" ").append("(").append(this.userId).append(")").
+                append(" ").append(this.ipAddress).append(" ").append(this.eventType);
+
+        return str.toString();
     }
 }

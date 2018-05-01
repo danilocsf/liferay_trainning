@@ -59,6 +59,23 @@ public class AmfRegistrationLogLocalServiceUtil {
 		getService().addLog(log);
 	}
 
+	public static long countAllLogs() {
+		return getService().countAllLogs();
+	}
+
+	public static long countLogsByEventType(java.lang.String eventType) {
+		return getService().countLogsByEventType(eventType);
+	}
+
+	public static long countLogsByEventTypeAndUserId(
+		java.lang.String eventType, long userId) {
+		return getService().countLogsByEventTypeAndUserId(eventType, userId);
+	}
+
+	public static long countLogsByUserId(long userId) {
+		return getService().countLogsByUserId(userId);
+	}
+
 	/**
 	* Creates a new amf registration log with the primary key. Does not add the amf registration log to the database.
 	*
@@ -183,6 +200,27 @@ public class AmfRegistrationLogLocalServiceUtil {
 	public static com.liferay.docs.amf.registration.model.AmfRegistrationLog fetchAmfRegistrationLog(
 		long logId) {
 		return getService().fetchAmfRegistrationLog(logId);
+	}
+
+	public static java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findAllLogs(
+		int start, int end) {
+		return getService().findAllLogs(start, end);
+	}
+
+	public static java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventType(
+		java.lang.String eventType, int start, int end) {
+		return getService().findLogByEventType(eventType, start, end);
+	}
+
+	public static java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventTypeAndUserId(
+		java.lang.String eventType, long userId, int start, int end) {
+		return getService()
+				   .findLogByEventTypeAndUserId(eventType, userId, start, end);
+	}
+
+	public static java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByUserId(
+		long userId, int start, int end) {
+		return getService().findLogByUserId(userId, start, end);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

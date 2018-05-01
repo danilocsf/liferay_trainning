@@ -37,4 +37,6 @@ public class AmfRegistrationServiceImpl extends AmfRegistrationServiceBaseImpl {
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.docs.amf.registration.service.AmfRegistrationServiceUtil} to access the amf registration remote service.
 	 */
+
+
 }

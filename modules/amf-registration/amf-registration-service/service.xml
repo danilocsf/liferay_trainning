@@ -17,5 +17,23 @@
         <column name="ipAddress" type="String" />
         <column name="eventType" type="String" />
         <column name="additionalInfo" type="String" />
+
+        <order by="desc">
+            <order-column name="dateTime"/>
+        </order>
+
+        <finder name="UserId" return-type="Collection">
+            <finder-column name="userId"/>
+        </finder>
+
+        <finder name="EventType" return-type="Collection">
+            <finder-column name="eventType"/>
+        </finder>
+
+        <finder name="EventTypeAndUserId" return-type="Collection">
+            <finder-column name="eventType"/>
+            <finder-column name="userId"/>
+        </finder>
+
     </entity>
 </service-builder>
