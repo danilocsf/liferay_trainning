@@ -1,5 +1,13 @@
 <%@ include file="/init.jsp" %>
 
-<p>
-    <b><liferay-ui:message key="guestbook-web.caption"/></b>
-</p>
+<liferay-ui:tabs names="All,Registration,Login" refresh="false">
+    <liferay-ui:section>
+        All
+    </liferay-ui:section>
+    <liferay-ui:section>
+        Registration
+    </liferay-ui:section>
+    <liferay-ui:section>
+        Login
+    </liferay-ui:section>
+</liferay-ui:tabs>
