@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -75,14 +74,14 @@ public interface AmfRegistrationLogLocalService extends BaseLocalService,
 
 	public void addLog(AmfRegistrationLogDTO log) throws PortalException;
 
-	public long countAllLogs();
+	public int countAllLogs();
 
-	public long countLogsByEventType(java.lang.String eventType);
+	public int countLogsByEventType(java.lang.String eventType);
 
-	public long countLogsByEventTypeAndUserId(java.lang.String eventType,
+	public int countLogsByEventTypeAndUserId(java.lang.String eventType,
 		long userId);
 
-	public long countLogsByUserId(long userId);
+	public int countLogsByUserId(long userId);
 
 	/**
 	* Creates a new amf registration log with the primary key. Does not add the amf registration log to the database.
@@ -182,16 +181,16 @@ public interface AmfRegistrationLogLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AmfRegistrationLog fetchAmfRegistrationLog(long logId);
 
-	public Collection<AmfRegistrationLogDTO> findAllLogs(int start, int end);
+	public List<AmfRegistrationLogDTO> findAllLogs(int start, int end);
 
-	public Collection<AmfRegistrationLogDTO> findLogByEventType(
+	public List<AmfRegistrationLogDTO> findLogByEventType(
 		java.lang.String eventType, int start, int end);
 
-	public Collection<AmfRegistrationLogDTO> findLogByEventTypeAndUserId(
+	public List<AmfRegistrationLogDTO> findLogByEventTypeAndUserId(
 		java.lang.String eventType, long userId, int start, int end);
 
-	public Collection<AmfRegistrationLogDTO> findLogByUserId(long userId,
-		int start, int end);
+	public List<AmfRegistrationLogDTO> findLogByUserId(long userId, int start,
+		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

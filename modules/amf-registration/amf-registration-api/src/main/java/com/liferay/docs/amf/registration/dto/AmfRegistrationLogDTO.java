@@ -11,9 +11,14 @@ public class AmfRegistrationLogDTO {
     private String additionalInfo;
     private Date dateTime;
     private String ipAddress;
+    private String formattedDateTime;
 
     public Long getUserId() {
         return userId;
+    }
+
+    public String getFormattedUserId() {
+        return "("+userId+")";
     }
 
     public void setUserId(Long userId) {
@@ -50,6 +55,15 @@ public class AmfRegistrationLogDTO {
 
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+        this.formattedDateTime = null;
+        if(dateTime != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            formattedDateTime = sdf.format(this.dateTime);
+        }
+    }
+
+    public String getFormattedDateTime() {
+        return formattedDateTime;
     }
 
     public String getIpAddress() {
@@ -60,18 +74,5 @@ public class AmfRegistrationLogDTO {
         this.ipAddress = ipAddress;
     }
 
-    @Override
-    public String toString() {
-
-        String formattedDate = "";
-        if (this.dateTime != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            formattedDate = sdf.format(this.dateTime);
-        }
-        StringBuilder str = new StringBuilder();
-        str.append(formattedDate).append(" ").append(this.screenName).append(" ").append("(").append(this.userId).append(")").
-                append(" ").append(this.ipAddress).append(" ").append(this.eventType);
-
-        return str.toString();
-    }
 }
+

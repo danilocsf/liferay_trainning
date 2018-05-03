@@ -10,7 +10,7 @@ import javax.portlet.RenderResponse;
 @Component(
         immediate = true,
         property = {
-                "javax.portlet.name=" + AmfRegistrationPortletKeys.AmfRegistration, "mvc.command.name=/",
+                "javax.portlet.name=" + AmfRegistrationPortletKeys.AMF_REGISTRATION, "mvc.command.name=/",
                 "mvc.command.name=/signup"
         },
         service = MVCRenderCommand.class

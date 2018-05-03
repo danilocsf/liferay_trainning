@@ -10,16 +10,13 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import javax.portlet.*;
-import javax.servlet.http.HttpServletRequest;
 
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import org.osgi.service.component.annotations.Component;
 
@@ -36,7 +33,7 @@ import java.io.IOException;
                 "javax.portlet.display-name=amf-registration",
                 "javax.portlet.init-param.template-path=/",
                 "javax.portlet.init-param.view-template=/view.jsp",
-                "javax.portlet.name=" + AmfRegistrationPortletKeys.AmfRegistration,
+                "javax.portlet.name=" + AmfRegistrationPortletKeys.AMF_REGISTRATION,
                 "javax.portlet.resource-bundle=content.Language",
                 "javax.portlet.security-role-ref=power-user,user"
         },

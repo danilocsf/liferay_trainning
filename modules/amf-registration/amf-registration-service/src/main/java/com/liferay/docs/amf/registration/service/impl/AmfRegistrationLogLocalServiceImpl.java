@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The implementation of the amf registration log local service.
@@ -57,44 +58,44 @@ public class AmfRegistrationLogLocalServiceImpl
         amfRegistrationLogPersistence.update(newLog);
     }
 
-    public Collection<AmfRegistrationLogDTO> findLogByUserId(long userId, int start, int end) {
-        Collection<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByUserId(userId, start, end);
+    public List<AmfRegistrationLogDTO> findLogByUserId(long userId, int start, int end) {
+    	List<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByUserId(userId, start, end);
         return buildDTOCollection(list);
     }
 
-    public Collection<AmfRegistrationLogDTO> findLogByEventType(String eventType, int start, int end) {
-        Collection<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByEventType(eventType, start, end);
+    public List<AmfRegistrationLogDTO> findLogByEventType(String eventType, int start, int end) {
+    	List<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByEventType(eventType, start, end);
         return buildDTOCollection(list);
     }
 
-    public Collection<AmfRegistrationLogDTO> findLogByEventTypeAndUserId(String eventType, long userId, int start, int end) {
-        Collection<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByEventTypeAndUserId(eventType, userId, start, end);
+    public List<AmfRegistrationLogDTO> findLogByEventTypeAndUserId(String eventType, long userId, int start, int end) {
+    	List<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByEventTypeAndUserId(eventType, userId, start, end);
         return buildDTOCollection(list);
     }
 
-    public Collection<AmfRegistrationLogDTO> findAllLogs(int start, int end) {
-        Collection<AmfRegistrationLog> list = amfRegistrationLogPersistence.findAll(start, end);
+    public List<AmfRegistrationLogDTO> findAllLogs(int start, int end) {
+    	List<AmfRegistrationLog> list = amfRegistrationLogPersistence.findAll(start, end);
         return buildDTOCollection(list);
     }
 
-    public long countAllLogs(){
+    public int countAllLogs(){
         return amfRegistrationLogPersistence.countAll();
     }
 
-    public long countLogsByUserId(long userId){
+    public int countLogsByUserId(long userId){
         return amfRegistrationLogPersistence.countByUserId(userId);
     }
 
-    public long countLogsByEventType(String eventType){
+    public int countLogsByEventType(String eventType){
         return amfRegistrationLogPersistence.countByEventType(eventType);
     }
 
-    public long countLogsByEventTypeAndUserId(String eventType, long userId){
+    public int countLogsByEventTypeAndUserId(String eventType, long userId){
         return amfRegistrationLogPersistence.countByEventTypeAndUserId(eventType, userId);
     }
 
-    private Collection<AmfRegistrationLogDTO> buildDTOCollection(Collection<AmfRegistrationLog> list) {
-        Collection<AmfRegistrationLogDTO> returnList = new ArrayList<AmfRegistrationLogDTO>();
+    private List<AmfRegistrationLogDTO> buildDTOCollection(List<AmfRegistrationLog> list) {
+    	List<AmfRegistrationLogDTO> returnList = new ArrayList<AmfRegistrationLogDTO>();
         if (list != null) {
             for (AmfRegistrationLog log : list) {
                 AmfRegistrationLogDTO dto = new AmfRegistrationLogDTO();

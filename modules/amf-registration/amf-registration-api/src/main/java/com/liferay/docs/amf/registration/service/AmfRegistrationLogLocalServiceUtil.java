@@ -59,20 +59,20 @@ public class AmfRegistrationLogLocalServiceUtil {
 		getService().addLog(log);
 	}
 
-	public static long countAllLogs() {
+	public static int countAllLogs() {
 		return getService().countAllLogs();
 	}
 
-	public static long countLogsByEventType(java.lang.String eventType) {
+	public static int countLogsByEventType(java.lang.String eventType) {
 		return getService().countLogsByEventType(eventType);
 	}
 
-	public static long countLogsByEventTypeAndUserId(
+	public static int countLogsByEventTypeAndUserId(
 		java.lang.String eventType, long userId) {
 		return getService().countLogsByEventTypeAndUserId(eventType, userId);
 	}
 
-	public static long countLogsByUserId(long userId) {
+	public static int countLogsByUserId(long userId) {
 		return getService().countLogsByUserId(userId);
 	}
 
@@ -202,23 +202,23 @@ public class AmfRegistrationLogLocalServiceUtil {
 		return getService().fetchAmfRegistrationLog(logId);
 	}
 
-	public static java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findAllLogs(
+	public static java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findAllLogs(
 		int start, int end) {
 		return getService().findAllLogs(start, end);
 	}
 
-	public static java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventType(
+	public static java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventType(
 		java.lang.String eventType, int start, int end) {
 		return getService().findLogByEventType(eventType, start, end);
 	}
 
-	public static java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventTypeAndUserId(
+	public static java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventTypeAndUserId(
 		java.lang.String eventType, long userId, int start, int end) {
 		return getService()
 				   .findLogByEventTypeAndUserId(eventType, userId, start, end);
 	}
 
-	public static java.util.Collection<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByUserId(
+	public static java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByUserId(
 		long userId, int start, int end) {
 		return getService().findLogByUserId(userId, start, end);
 	}
