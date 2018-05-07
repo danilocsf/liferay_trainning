@@ -2,6 +2,7 @@ package com.liferay.docs.amf.registration.service.com.liferay.docs.amf.registrat
 
 import com.liferay.docs.amf.registration.constants.AmfRegistrationLogConstants;
 import com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO;
+import com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalService;
 import com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalServiceUtil;
 import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationLogUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
@@ -10,6 +11,7 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import java.util.Date;
 
@@ -19,7 +21,8 @@ import java.util.Date;
 )
 public class UserModelListener extends BaseModelListener<User> {
 
-
+	private AmfRegistrationLogLocalService amfRegistrationLogLocalService;
+	
     public void onAfterCreate(User user) throws ModelListenerException {
         AmfRegistrationLogDTO log = new AmfRegistrationLogDTO();
         log.setDateTime(new Date());
@@ -29,9 +32,15 @@ public class UserModelListener extends BaseModelListener<User> {
         log.setUserId(user.getUserId());
 
         try {
-            AmfRegistrationLogLocalServiceUtil.addLog(log);
+        	amfRegistrationLogLocalService.addLog(log);
         } catch (PortalException e) {
             e.printStackTrace();
         }
     }
+    
+    @Reference(unbind = "-")
+    protected void setAmfRegistrationLogService(AmfRegistrationLogLocalService amfRegistrationLogLocalService) {
+    	this.amfRegistrationLogLocalService = amfRegistrationLogLocalService;
+    }
+
 }

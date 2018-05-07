@@ -14,14 +14,13 @@
 
 package com.liferay.docs.amf.registration.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO;
 import com.liferay.docs.amf.registration.model.AmfRegistrationLog;
 import com.liferay.docs.amf.registration.service.base.AmfRegistrationLogLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * The implementation of the amf registration log local service.
@@ -46,7 +45,7 @@ public class AmfRegistrationLogLocalServiceImpl
      */
 
     public void addLog(AmfRegistrationLogDTO log) throws PortalException {
-
+    	
         AmfRegistrationLog newLog = amfRegistrationLogPersistence.create(0);
         newLog.setAdditionalInfo(log.getAdditionalInfo());
         newLog.setDateTime(log.getDateTime());

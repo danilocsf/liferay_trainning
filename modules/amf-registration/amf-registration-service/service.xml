@@ -6,7 +6,10 @@
     <namespace>AR</namespace>
 
     <entity local-service="true" name="AmfRegistration">
-
+		<reference entity="User" package-path="com.liferay.portal" />
+		<reference entity="Address" package-path="com.liferay.portal" />
+		<reference entity="Phone" package-path="com.liferay.portal" />
+  		
 	</entity>
 
     <entity name="AmfRegistrationLog" table="AMF_REGISTRATION_LOG" local-service="true">

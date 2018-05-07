@@ -1,16 +1,25 @@
 package com.liferay.docs.amf.registration.portlet;
 
-import com.liferay.docs.amf.registration.constants.AmfRegistrationPortletKeys;
+import java.io.IOException;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.Portlet;
+import javax.portlet.PortletException;
+import javax.portlet.PortletSession;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+import com.liferay.docs.amf.registration.constants.AmfRegistrationPortletKeys;
 import com.liferay.docs.amf.registration.dto.AmfRegistrationDTO;
 import com.liferay.docs.amf.registration.exception.AmfRegistrationException;
-import com.liferay.docs.amf.registration.service.AmfRegistrationLocalServiceUtil;
+import com.liferay.docs.amf.registration.service.AmfRegistrationLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-
-import javax.portlet.*;
-
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -18,9 +27,6 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import org.osgi.service.component.annotations.Component;
-
-import java.io.IOException;
 
 /**
  * @author danilo-ferreira
@@ -41,16 +47,16 @@ import java.io.IOException;
 )
 public class AmfRegistrationPortlet extends MVCPortlet {
 
-
+	private AmfRegistrationLocalService amfRegistrationLocalService;
+	
     public void saveUserRegister(ActionRequest request, ActionResponse response) throws PortalException {
 
         ServiceContext serviceContext = ServiceContextFactory.getInstance(
                 User.class.getName(), request);
 
-
         AmfRegistrationDTO userData = getUserRegisterData(request);
         try {
-            AmfRegistrationLocalServiceUtil.saveUserRegister(userData, serviceContext);
+        	amfRegistrationLocalService.saveUserRegister(userData, serviceContext);
             SessionMessages.add(request, "userAdded");
         }catch(AmfRegistrationException e){
             SessionErrors.clear(request);
@@ -99,6 +105,11 @@ public class AmfRegistrationPortlet extends MVCPortlet {
         String accepted = ParamUtil.getString(request, "accepted_tou");
         user.setAcceptedTOU("true".equals(accepted));
         return user;
+    }
+    
+    @Reference(unbind = "-")
+    protected void setAmfRegistrationService(AmfRegistrationLocalService amfRegistrationLocalService) {
+    	this.amfRegistrationLocalService = amfRegistrationLocalService;
     }
 }
 

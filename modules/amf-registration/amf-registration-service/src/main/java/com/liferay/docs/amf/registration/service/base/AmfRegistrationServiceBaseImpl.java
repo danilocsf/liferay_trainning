@@ -25,7 +25,9 @@ import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
+import com.liferay.portal.kernel.service.persistence.AddressPersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
+import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -168,6 +170,62 @@ public abstract class AmfRegistrationServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
+	 * Returns the address local service.
+	 *
+	 * @return the address local service
+	 */
+	public com.liferay.portal.kernel.service.AddressLocalService getAddressLocalService() {
+		return addressLocalService;
+	}
+
+	/**
+	 * Sets the address local service.
+	 *
+	 * @param addressLocalService the address local service
+	 */
+	public void setAddressLocalService(
+		com.liferay.portal.kernel.service.AddressLocalService addressLocalService) {
+		this.addressLocalService = addressLocalService;
+	}
+
+	/**
+	 * Returns the address remote service.
+	 *
+	 * @return the address remote service
+	 */
+	public com.liferay.portal.kernel.service.AddressService getAddressService() {
+		return addressService;
+	}
+
+	/**
+	 * Sets the address remote service.
+	 *
+	 * @param addressService the address remote service
+	 */
+	public void setAddressService(
+		com.liferay.portal.kernel.service.AddressService addressService) {
+		this.addressService = addressService;
+	}
+
+	/**
+	 * Returns the address persistence.
+	 *
+	 * @return the address persistence
+	 */
+	public AddressPersistence getAddressPersistence() {
+		return addressPersistence;
+	}
+
+	/**
+	 * Sets the address persistence.
+	 *
+	 * @param addressPersistence the address persistence
+	 */
+	public void setAddressPersistence(AddressPersistence addressPersistence) {
+		this.addressPersistence = addressPersistence;
+	}
+
+	/**
 	 * Returns the class name local service.
 	 *
 	 * @return the class name local service
@@ -222,6 +280,62 @@ public abstract class AmfRegistrationServiceBaseImpl extends BaseServiceImpl
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
 		this.classNamePersistence = classNamePersistence;
+	}
+
+	/**
+	 * Returns the phone local service.
+	 *
+	 * @return the phone local service
+	 */
+	public com.liferay.portal.kernel.service.PhoneLocalService getPhoneLocalService() {
+		return phoneLocalService;
+	}
+
+	/**
+	 * Sets the phone local service.
+	 *
+	 * @param phoneLocalService the phone local service
+	 */
+	public void setPhoneLocalService(
+		com.liferay.portal.kernel.service.PhoneLocalService phoneLocalService) {
+		this.phoneLocalService = phoneLocalService;
+	}
+
+	/**
+	 * Returns the phone remote service.
+	 *
+	 * @return the phone remote service
+	 */
+	public com.liferay.portal.kernel.service.PhoneService getPhoneService() {
+		return phoneService;
+	}
+
+	/**
+	 * Sets the phone remote service.
+	 *
+	 * @param phoneService the phone remote service
+	 */
+	public void setPhoneService(
+		com.liferay.portal.kernel.service.PhoneService phoneService) {
+		this.phoneService = phoneService;
+	}
+
+	/**
+	 * Returns the phone persistence.
+	 *
+	 * @return the phone persistence
+	 */
+	public PhonePersistence getPhonePersistence() {
+		return phonePersistence;
+	}
+
+	/**
+	 * Sets the phone persistence.
+	 *
+	 * @param phonePersistence the phone persistence
+	 */
+	public void setPhonePersistence(PhonePersistence phonePersistence) {
+		this.phonePersistence = phonePersistence;
 	}
 
 	/**
@@ -351,12 +465,24 @@ public abstract class AmfRegistrationServiceBaseImpl extends BaseServiceImpl
 	protected AmfRegistrationLogPersistence amfRegistrationLogPersistence;
 	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
 	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.AddressLocalService.class)
+	protected com.liferay.portal.kernel.service.AddressLocalService addressLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.AddressService.class)
+	protected com.liferay.portal.kernel.service.AddressService addressService;
+	@ServiceReference(type = AddressPersistence.class)
+	protected AddressPersistence addressPersistence;
 	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
 	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
 	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
+	@ServiceReference(type = com.liferay.portal.kernel.service.PhoneLocalService.class)
+	protected com.liferay.portal.kernel.service.PhoneLocalService phoneLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.PhoneService.class)
+	protected com.liferay.portal.kernel.service.PhoneService phoneService;
+	@ServiceReference(type = PhonePersistence.class)
+	protected PhonePersistence phonePersistence;
 	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
 	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
 	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
