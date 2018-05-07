@@ -17,6 +17,9 @@ package com.liferay.docs.amf.registration.service.impl;
 import com.liferay.docs.amf.registration.dto.AmfRegistrationDTO;
 import com.liferay.docs.amf.registration.exception.AmfRegistrationException;
 import com.liferay.docs.amf.registration.service.base.AmfRegistrationLocalServiceBaseImpl;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
+import com.liferay.portal.kernel.dao.orm.SQLQuery;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Address;
@@ -29,6 +32,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,12 +60,55 @@ public class AmfRegistrationLocalServiceImpl
      */
     public void saveUserRegister(AmfRegistrationDTO userData, ServiceContext serviceContext)
             throws PortalException {
-
+    	
         validateUserData(userData);
         User user = createuser(userData, serviceContext);
         createAddress(user, userData, serviceContext);
         createPhones(user, userData, serviceContext);
     }
+    
+    public int countUserAddressByZip(String zip){
+    	
+  		String sql = "SELECT count(*) FROM User_ where userId in (SELECT userId FROM Address where zip = ? and primary_=1)";
+  		Session session = userPersistence.openSession();
+  		SQLQuery sqlQuery = session.createSQLQuery(sql);
+  		QueryPos pos = QueryPos.getInstance(sqlQuery);
+  		pos.add(zip);
+  		BigInteger count = (BigInteger)sqlQuery.uniqueResult(); 
+  		return count.intValue();    	
+    }   
+    
+    public List<AmfRegistrationDTO> findUserByZip(String zip, int start, int delta){
+    	
+  		String sql = "select u.firstName, u.lastName, u.screenName, u.emailAddress from User_ u "
+  				+ "where u.userId in (SELECT a.userId FROM Address a where a.zip = ? and a.primary_=1) LIMIT ?, ?";
+  		Session session = userPersistence.openSession();
+  		SQLQuery sqlQuery = session.createSQLQuery(sql);
+  		QueryPos pos = QueryPos.getInstance(sqlQuery);
+  		pos.add(zip);
+  		pos.add(start);
+  		pos.add(delta);
+  		List<Object[]> returnedList = (List<Object[]>)sqlQuery.list();  		
+  		return buildAmfRegistrationDTOList(returnedList, zip);    	
+    }   
+    
+    private List<AmfRegistrationDTO> buildAmfRegistrationDTOList(List<Object[]> list, String zip){
+    	List<AmfRegistrationDTO> resultList = new ArrayList<AmfRegistrationDTO>();
+  		
+    	if(list != null){
+  			for(Object[] objs : list){
+  				AmfRegistrationDTO dto = new AmfRegistrationDTO();
+  				dto.setFirstName((String)objs[0]);
+  				dto.setLastName((String)objs[1]);
+  				dto.setUserName((String)objs[2]);
+  				dto.setEmail((String)objs[3]);
+  				dto.setZipCode(zip);
+  				resultList.add(dto);  				
+  			}
+  		}
+    	return resultList;
+    }
+        
 
     private User createuser(AmfRegistrationDTO userData, ServiceContext serviceContext) throws PortalException {
 

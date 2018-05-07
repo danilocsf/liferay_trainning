@@ -34,6 +34,17 @@ public class AmfRegistrationLocalServiceWrapper
 		_amfRegistrationLocalService = amfRegistrationLocalService;
 	}
 
+	@Override
+	public int countUserAddressByZip(java.lang.String zip) {
+		return _amfRegistrationLocalService.countUserAddressByZip(zip);
+	}
+
+	@Override
+	public java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationDTO> findUserByZip(
+		java.lang.String zip, int start, int delta) {
+		return _amfRegistrationLocalService.findUserByZip(zip, start, delta);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*

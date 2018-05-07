@@ -7,4 +7,5 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.cmpn", version: "6.0.0"
 	compileOnly project(":modules:amf-registration:amf-registration-api")
 	compileOnly project(":modules:amf-registration:amf-registration-service")
+	compile group: "org.osgi", name:"org.osgi.service.component.annotations", version:"1.3.0"
 }

@@ -2,10 +2,13 @@ package com.liferay.docs.amf.registration.dto;
 
 import java.util.Locale;
 
+import com.liferay.portal.kernel.util.StringUtil;
+
 public class AmfRegistrationDTO {
 
     private String firstName;
     private String lastName;
+    private String lastNameInitial;
     private String email;
     private String userName;
     private String gender;
@@ -41,8 +44,16 @@ public class AmfRegistrationDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+        this.lastNameInitial = null;
+        if(this.lastName != null && this.lastName.trim().length() > 0){
+        	this.lastNameInitial = lastName.trim().substring(0,1) + "."; 
+        }
     }
-
+    
+    public String getLastNameInitial(){
+    	return this.lastNameInitial;
+    }
+    
     public String getEmail() {
         return email == null ? null : email.trim();
     }

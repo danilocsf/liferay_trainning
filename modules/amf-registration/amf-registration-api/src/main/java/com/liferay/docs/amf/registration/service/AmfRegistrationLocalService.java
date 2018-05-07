@@ -48,6 +48,10 @@ public interface AmfRegistrationLocalService extends BaseLocalService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AmfRegistrationLocalServiceUtil} to access the amf registration local service. Add custom service methods to {@link com.liferay.docs.amf.registration.service.impl.AmfRegistrationLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public int countUserAddressByZip(java.lang.String zip);
+
+	public java.util.List<AmfRegistrationDTO> findUserByZip(
+		java.lang.String zip, int start, int delta);
 
 	/**
 	* Returns the OSGi service identifier.

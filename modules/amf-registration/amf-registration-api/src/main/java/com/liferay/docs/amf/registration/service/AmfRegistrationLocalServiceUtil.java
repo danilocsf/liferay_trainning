@@ -41,6 +41,14 @@ public class AmfRegistrationLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.docs.amf.registration.service.impl.AmfRegistrationLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static int countUserAddressByZip(java.lang.String zip) {
+		return getService().countUserAddressByZip(zip);
+	}
+
+	public static java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationDTO> findUserByZip(
+		java.lang.String zip, int start, int delta) {
+		return getService().findUserByZip(zip, start, delta);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
