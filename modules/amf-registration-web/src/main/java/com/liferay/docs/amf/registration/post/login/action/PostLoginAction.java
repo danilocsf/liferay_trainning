@@ -26,7 +26,9 @@ import java.util.Date;
 public class PostLoginAction  implements LifecycleAction {
 	
 	private AmfRegistrationLogLocalService amfRegistrationLogLocalService;
-
+	/**
+	 * Creates a log for the login action.
+	 */
     @Override
     public void processLifecycleEvent(LifecycleEvent lifecycleEvent) throws ActionException {
 

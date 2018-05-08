@@ -49,6 +49,12 @@ public class AmfRegistrationPortlet extends MVCPortlet {
 
 	private AmfRegistrationLocalService amfRegistrationLocalService;
 	
+	/**
+	 * Saves a new user account.
+	 * @param request
+	 * @param response
+	 * @throws PortalException
+	 */
     public void saveUserRegister(ActionRequest request, ActionResponse response) throws PortalException {
 
         ServiceContext serviceContext = ServiceContextFactory.getInstance(
@@ -69,7 +75,7 @@ public class AmfRegistrationPortlet extends MVCPortlet {
     @Override
     public void render(RenderRequest request, RenderResponse response)
             throws PortletException, IOException {
-
+    	/*Checks whether the user is logged in and put this information in the session to be treated in the JSP file */
         ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
         if (themeDisplay.isSignedIn()) {
             PortletSession session = request.getPortletSession();
@@ -77,7 +83,12 @@ public class AmfRegistrationPortlet extends MVCPortlet {
         }
         super.render(request, response);
     }
-
+    
+    /**
+     * Gets all data informed by user on register page.
+     * @param request
+     * @return AmfRegistrationDTO
+     */
     private AmfRegistrationDTO getUserRegisterData(ActionRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
         AmfRegistrationDTO user = new AmfRegistrationDTO();

@@ -59,6 +59,13 @@ public class AmfRegistrationLocalServiceImpl
      *
      * Never reference this class directly. Always use {@link com.liferay.docs.amf.registration.service.AmfRegistrationLocalServiceUtil} to access the amf registration local service.
      */
+	
+	/**
+	 *  Validates and saves a new user account.
+	 *  @param AmfRegistrationDTO - data to be saved
+	 *  @param ServiceContext
+	 *  @throws PortalException - if validation errors occurs
+	 */
     public void saveUserRegister(AmfRegistrationDTO userData, ServiceContext serviceContext)
             throws PortalException {
     	
@@ -68,6 +75,11 @@ public class AmfRegistrationLocalServiceImpl
         createPhones(user, userData, serviceContext);
     }
     
+    /**
+     * Gets the number of saved users with the informed zip code.
+     * @param zip code
+     * @return number of saved users with the informed zip code. 
+     */
     public int countUserAddressByZip(String zip){
     	
   		String sql = "SELECT count(*) FROM User_ where userId in (SELECT userId FROM Address where zip = ? and primary_=1)";
@@ -79,6 +91,14 @@ public class AmfRegistrationLocalServiceImpl
   		return count.intValue();    	
     }   
     
+    
+    /**
+     * Gets data from users with the informed zip code.
+     * @param zip code
+     * @param int - start position to find data in database
+     * @param int - max number of register to be returned 
+     * @return list of users 
+     */
     public List<AmfRegistrationDTO> findUserByZip(String zip, int start, int delta){
     	
   		String sql = "select u.firstName, u.lastName, u.screenName, u.emailAddress from User_ u "
@@ -110,7 +130,13 @@ public class AmfRegistrationLocalServiceImpl
     	return resultList;
     }
         
-
+    /**
+     * Creates a new user account. 
+     * @param AmfRegistrationDTO - object containing the user data
+     * @param serviceContext
+     * @return User - created User object
+     * @throws PortalException
+     */
     private User createuser(AmfRegistrationDTO userData, ServiceContext serviceContext) throws PortalException {
 
         User user = userLocalService.addUser(0, userData.getCompanyId(), false, userData.getPassword(),
@@ -124,7 +150,14 @@ public class AmfRegistrationLocalServiceImpl
         userLocalService.updateAgreedToTermsOfUse(user.getUserId(), userData.getAcceptedTOU());
         return user;
     }
-
+    /**
+     * Creates an address for the user. 
+     * @param User - user to have the address associated
+     * @param AmfRegistrationDTO - object containing the address data
+     * @param serviceContext
+     * @return Address - created address object
+     * @throws PortalException
+     */
     private Address createAddress(User user, AmfRegistrationDTO userData, ServiceContext serviceContext) throws PortalException {
         Address address = addressLocalService.addAddress(user.getUserId(), Contact.class.getName(), user.getContactId(),
                 userData.getAddress1(), userData.getAddress2(),
@@ -133,7 +166,14 @@ public class AmfRegistrationLocalServiceImpl
                 true, serviceContext);
         return address;
     }
-
+    /**
+     * Creates a phone for the user
+     * @param  User - user to have the phone associated
+     * @param AmfRegistrationDTO - object containing the phone data
+     * @param serviceContext
+     * @return List<Phone> - created Phones objects
+     * @throws PortalException
+     */
     private List<Phone> createPhones(User user, AmfRegistrationDTO userData, ServiceContext serviceContext) throws PortalException {
         List<Phone>phones = new ArrayList<Phone>();
         if(Validator.isNotNull(userData.getHomePhone())) {
@@ -152,22 +192,27 @@ public class AmfRegistrationLocalServiceImpl
         return phoneLocalService.addPhone(userId,
                 Contact.class.getName(), contactId, number, null, typeId, primary, serviceContext);
     }
-
+    /**
+     * Validates all user data. 
+     * @param content to be validated
+     * @throws PortalException  
+     */
     private void validateUserData(AmfRegistrationDTO userData) throws PortalException {
         validateFieldContent(userData);
+        /*Screen name must be unique*/
         try {
             userLocalService.getUserByScreenName(userData.getCompanyId(), userData.getUserName());
             throw new AmfRegistrationException(Arrays.asList("userNameAlreadyExists"));
         } catch (NoSuchUserException e) {
 
         }
+        /*Email must be unique*/
         try {
         	userLocalService.getUserByEmailAddress(userData.getCompanyId(), userData.getEmail());
             throw new AmfRegistrationException(Arrays.asList("userEmailAlreadyExists"));
         } catch (NoSuchUserException e) {
 
         }
-
 
     }
 
@@ -232,7 +277,12 @@ public class AmfRegistrationLocalServiceImpl
             errors.add(errorKey);
         }
     }
-
+    /**
+     * Validates the informed password.
+     * @param password
+     * @param password2
+     * @param  List - list to keep errors
+     */
     private void validatePassword(String password, String password2, List<String> errors) {
         if (Validator.isBlank(password)) {
             errors.add("passwordRequired");
@@ -248,7 +298,15 @@ public class AmfRegistrationLocalServiceImpl
             }
         }
     }
-
+    
+    /**
+     * Validates the informed birthday.
+     * It must be more more than 13 years. 
+     * @param birthday month
+     * @param birthday day
+     * @param birthday year
+     * @param List - list to keep errors
+     */
     private void validateBirthday(int birthdayMonth, int birthdayDay, int birthdayYear, List<String> errors) {
         if (birthdayDay == 0 || birthdayMonth == 0 || birthdayYear == 0) {
             errors.add("birthdayRequired");
@@ -267,7 +325,17 @@ public class AmfRegistrationLocalServiceImpl
             }
         }
     }
-
+    
+    /**
+     * Validates data according parameters
+     * @param String - content to be validated
+     * @param List - list to keep errors
+     * @param boolean - whether content is required 
+     * @param int - the max length of the content
+     * @param String - key that represents a message for required validation
+     * @param String - key that represents a message for length validation
+     * @return boolean - true if the content is valid and false otherwise
+     */
     private boolean validateFieldContent(String data, List<String> errors, boolean isRequired, int maxLength, String mandatoryKey, String lengthKey) {
         boolean ok = true;
         if (Validator.isBlank(data)) {

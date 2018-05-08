@@ -39,7 +39,7 @@ public class AmfEventMonitorPortlet extends MVCPortlet {
     @Override
     public void render(RenderRequest request, RenderResponse response)
         throws PortletException, IOException {
-    	    	
+    	
         if(this.hasPermissionToViewAllUser == null){
             this.hasPermissionToViewAllUser = checkViewAllUsersPermission(request);            
         }
@@ -48,7 +48,11 @@ public class AmfEventMonitorPortlet extends MVCPortlet {
         super.render(request, response);       
        
     }
-
+    /**
+     * Checks whether the current user has permission to view log informations for all users.
+     * @param request
+     * @return
+     */
     private boolean checkViewAllUsersPermission(RenderRequest request) {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);

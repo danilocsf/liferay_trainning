@@ -23,6 +23,9 @@ public class UserModelListener extends BaseModelListener<User> {
 
 	private AmfRegistrationLogLocalService amfRegistrationLogLocalService;
 	
+	/**
+	 * Creates a log for the user registration.
+	 */
     public void onAfterCreate(User user) throws ModelListenerException {
         AmfRegistrationLogDTO log = new AmfRegistrationLogDTO();
         log.setDateTime(new Date());
