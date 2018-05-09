@@ -1,6 +1,8 @@
 package com.liferay.docs.amf.registration.portlet;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -81,7 +83,27 @@ public class AmfRegistrationPortlet extends MVCPortlet {
             PortletSession session = request.getPortletSession();
             session.setAttribute("signIn", true, PortletSession.APPLICATION_SCOPE);
         }
+        /*In order to display the correct date, the birthday must be always updated in request*/
+        putBirthdayInRequest(request);
+        
         super.render(request, response);
+    }
+    
+    private void putBirthdayInRequest(RenderRequest request){
+    	
+    	Integer day = ParamUtil.getInteger(request, "b_day");
+    	Integer month = ParamUtil.getInteger(request, "b_month");
+    	Integer year = ParamUtil.getInteger(request, "b_year");
+    	/*The first time must put the current date*/
+    	if(day == null || day == 0){
+    		Calendar today = Calendar.getInstance();    		
+    	    day =  today.get(Calendar.DAY_OF_MONTH);
+    	    year = today.get(Calendar.YEAR);
+    	    month = today.get(Calendar.MONTH);
+    	}    			
+    	request.setAttribute("b_day", day.intValue());
+        request.setAttribute("b_month", month.intValue());
+        request.setAttribute("b_year", year.intValue());        
     }
     
     /**

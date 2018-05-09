@@ -1,5 +1,4 @@
 <%@ include file="/init.jsp" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.liferay.portal.kernel.model.Region" %>
 <%@ page import="com.liferay.portal.kernel.service.RegionServiceUtil" %>
@@ -45,10 +44,9 @@
 </portlet:renderURL>
 
 <%
-    Date today = new Date();
-    int day = today.getDate();
-    int year = today.getYear()+1900;
-    int month = today.getMonth();
+    int day = (Integer)request.getAttribute("b_day");
+    int year = (Integer)request.getAttribute("b_year");
+    int month = (Integer)request.getAttribute("b_month");
 
     List<Region> regions =  RegionServiceUtil.getRegions(19l);
 %>
