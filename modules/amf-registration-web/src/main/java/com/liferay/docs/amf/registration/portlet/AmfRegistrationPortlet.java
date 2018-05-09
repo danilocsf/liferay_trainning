@@ -79,10 +79,8 @@ public class AmfRegistrationPortlet extends MVCPortlet {
             throws PortletException, IOException {
     	/*Checks whether the user is logged in and put this information in the session to be treated in the JSP file */
         ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-        if (themeDisplay.isSignedIn()) {
-            PortletSession session = request.getPortletSession();
-            session.setAttribute("signIn", true, PortletSession.APPLICATION_SCOPE);
-        }
+        request.setAttribute("signIn",themeDisplay.isSignedIn());
+        
         /*In order to display the correct date, the birthday must be always updated in request*/
         putBirthdayInRequest(request);
         

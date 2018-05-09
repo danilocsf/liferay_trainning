@@ -56,7 +56,7 @@
 <aui:form action="<%= saveRegisterURL %>" name="<portlet:namespace />fm" >
 
 <c:choose>
-  <c:when test = "${sessionScope.signIn != null}">
+  <c:when test = "${requestScope.signIn eq true}">
     <liferay-ui:message key="user.already.logged.in" />
   </c:when>
   <c:otherwise>
