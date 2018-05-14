@@ -108,7 +108,7 @@ public class AmfRegistrationLogLocalServiceImpl
     }
     /**
      * Gets the number of logs.
-     * @param quantity of logs
+     * @return quantity of logs
      */
     public int countAllLogs(){
         return amfRegistrationLogPersistence.countAll();
@@ -117,7 +117,7 @@ public class AmfRegistrationLogLocalServiceImpl
     /**
      * Gets the number of logs for a specific user id.
      * @param user id
-     * @param quantity of logs
+     * @return quantity of logs
      */
     public int countLogsByUserId(long userId){
         return amfRegistrationLogPersistence.countByUserId(userId);
@@ -126,7 +126,7 @@ public class AmfRegistrationLogLocalServiceImpl
     /**
      * Gets the number of logs for a specific event type.
      * @param event type
-     * @param quantity of logs
+     * @return quantity of logs
      */
     public int countLogsByEventType(String eventType){
         return amfRegistrationLogPersistence.countByEventType(eventType);
@@ -136,7 +136,7 @@ public class AmfRegistrationLogLocalServiceImpl
      * Gets the number of logs for a specific event type and user id.
      * @param event type
      * @param user id
-     * @param quantity of logs
+     * @return quantity of logs
      */
     public int countLogsByEventTypeAndUserId(String eventType, long userId){
         return amfRegistrationLogPersistence.countByEventTypeAndUserId(eventType, userId);

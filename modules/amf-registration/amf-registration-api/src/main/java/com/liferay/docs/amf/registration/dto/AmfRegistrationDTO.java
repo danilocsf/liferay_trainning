@@ -46,7 +46,7 @@ public class AmfRegistrationDTO {
         this.lastName = lastName;
         this.lastNameInitial = null;
         if(this.lastName != null && this.lastName.trim().length() > 0){
-        	this.lastNameInitial = lastName.trim().substring(0,1) + "."; 
+        	this.lastNameInitial = lastName.charAt(0) + "."; 
         }
     }
     

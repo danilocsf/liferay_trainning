@@ -259,7 +259,10 @@ public class AmfRegistrationLocalServiceImpl
         validateFieldContent(userData.getAddress2(), errors, false, 255, "address2Required", "address2MaxLength");
         validateFieldContent(userData.getCity(), errors, true, 255, "cityRequired", "cityMaxLength");
         if (validateFieldContent(userData.getZipCode(), errors, true, 5, "zipCodeRequired", "zipCodeInvalid")) {
-            if (!Validator.isDigit(userData.getZipCode())) {
+            if(userData.getZipCode().length() != 5){
+            	errors.add("zipCodeInvalid");
+            }
+        	if (!Validator.isDigit(userData.getZipCode())) {
                 errors.add("zipCodeInvalid");
             }
         }

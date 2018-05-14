@@ -4,6 +4,11 @@ dependencies {
 	compileOnly group: "com.liferay", name: "com.liferay.portal.spring.extender", version: "2.0.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.6.0"
 	compileOnly project(":modules:amf-registration:amf-registration-api")
+	testCompile project(":modules:amf-registration:amf-registration-api")
+	testCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.6.0"
+	testCompile group: "junit", name: "junit", version: "4.12" 
+	testCompile group: 'org.mockito', name: 'mockito-core', version: '2.+' 
+	testCompile group: 'org.powermock', name: 'powermock-mockito-release-full', version: '1.6.4', ext: 'pom'
 }
 
 buildService {
