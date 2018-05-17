@@ -9,7 +9,6 @@
 >
 	<bean class="com.liferay.docs.amf.registration.service.impl.AmfRegistrationLocalServiceImpl" id="com.liferay.docs.amf.registration.service.AmfRegistrationLocalService" />
 	<bean class="com.liferay.docs.amf.registration.service.impl.AmfRegistrationServiceImpl" id="com.liferay.docs.amf.registration.service.AmfRegistrationService" />
-	<bean class="com.liferay.docs.amf.registration.service.impl.AmfRegistrationLogLocalServiceImpl" id="com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalService" />
 	<bean class="com.liferay.docs.amf.registration.service.impl.AmfRegistrationLogServiceImpl" id="com.liferay.docs.amf.registration.service.AmfRegistrationLogService" />
 	<bean class="com.liferay.docs.amf.registration.service.persistence.impl.AmfRegistrationLogPersistenceImpl" id="com.liferay.docs.amf.registration.service.persistence.AmfRegistrationLogPersistence" parent="basePersistence" />
 </beans>

@@ -17,7 +17,6 @@ package com.liferay.docs.amf.registration.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.docs.amf.registration.model.AmfRegistrationLog;
-import com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalServiceUtil;
 
 /**
  * The extended model base implementation for the AmfRegistrationLog service. Represents a row in the &quot;AMF_REGISTRATION_LOG&quot; database table, with each column mapped to a property of this class.
@@ -39,13 +38,4 @@ public abstract class AmfRegistrationLogBaseImpl
 	 *
 	 * Never modify or reference this class directly. All methods that expect a amf registration log model instance should use the {@link AmfRegistrationLog} interface instead.
 	 */
-	@Override
-	public void persist() {
-		if (this.isNew()) {
-			AmfRegistrationLogLocalServiceUtil.addAmfRegistrationLog(this);
-		}
-		else {
-			AmfRegistrationLogLocalServiceUtil.updateAmfRegistrationLog(this);
-		}
-	}
 }

@@ -16,9 +16,16 @@ package com.liferay.docs.amf.registration.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.docs.amf.registration.service.AmfRegistrationLogServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.docs.amf.registration.service.AmfRegistrationLogServiceUtil} service utility. The
+ * {@link AmfRegistrationLogServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,132 @@ import aQute.bnd.annotation.ProviderType;
  * @author liferay
  * @see AmfRegistrationLogServiceHttp
  * @see com.liferay.docs.amf.registration.model.AmfRegistrationLogSoap
- * @see com.liferay.docs.amf.registration.service.AmfRegistrationLogServiceUtil
+ * @see AmfRegistrationLogServiceUtil
  * @generated
  */
 @ProviderType
 public class AmfRegistrationLogServiceSoap {
+	/**
+	* Saves log informations
+	*
+	* @param AmfRegistrationLogDTO - log data
+	*/
+	public static void addLog(
+		com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO log)
+		throws RemoteException {
+		try {
+			AmfRegistrationLogServiceUtil.addLog(log);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
+	* Gets the quantity of logs of the logged user if the user does not have permission to view logs from all users.
+	* Otherwise, gets the quantity of logs of all users.
+	*
+	* @param ServiceContext
+	* @return quantity of logs of the current user or of all users, according the user permission.
+	* @throws PortalException
+	*/
+	public static int countAllLogs(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			int returnValue = AmfRegistrationLogServiceUtil.countAllLogs(serviceContext);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
+	* Gets the quantity of logs of the logged user and a specific event type if the user does not have permission to view logs from all users.
+	* Otherwise, gets the quantity of logs of all users and specific event type.
+	*
+	* @param ServiceContext
+	* @param event type
+	* @return quantity of logs of the current user or of all users, according the user permission.
+	* @throws PortalException
+	*/
+	public static int countLogsByEventType(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		java.lang.String eventType) throws RemoteException {
+		try {
+			int returnValue = AmfRegistrationLogServiceUtil.countLogsByEventType(serviceContext,
+					eventType);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
+	* Searches all logs of the logged user if the user does not have permission to view logs from all users.
+	* Otherwise, searches all logs of all users.
+	*
+	* @param ServiceContext
+	* @param start log position in database
+	* @param end log position in database
+	* @return list with founded logs
+	* @throws PortalException
+	*/
+	public static com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTOSoap[] findAllLogs(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int start, int end) throws RemoteException {
+		try {
+			java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> returnValue =
+				AmfRegistrationLogServiceUtil.findAllLogs(serviceContext,
+					start, end);
+
+			return com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTOSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
+	* Searches all logs of the logged user and informed event type if the user does not have permission to view logs from all users.
+	* Otherwise, searches all logs of all users and informed event type.
+	*
+	* @param ServiceContext
+	* @param eventType
+	* @param start log position in database
+	* @param end log position in database
+	* @return list with founded logs
+	* @throws PortalException
+	*/
+	public static com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTOSoap[] findLogByEventType(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		java.lang.String eventType, int start, int end)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> returnValue =
+				AmfRegistrationLogServiceUtil.findLogByEventType(serviceContext,
+					eventType, start, end);
+
+			return com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTOSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AmfRegistrationLogServiceSoap.class);
 }

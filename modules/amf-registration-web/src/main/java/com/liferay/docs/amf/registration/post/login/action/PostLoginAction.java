@@ -1,22 +1,21 @@
 package com.liferay.docs.amf.registration.post.login.action;
 
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 import com.liferay.docs.amf.registration.constants.AmfRegistrationLogConstants;
 import com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO;
-import com.liferay.docs.amf.registration.service.AmfRegistrationLocalService;
-import com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalService;
-import com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalServiceUtil;
+import com.liferay.docs.amf.registration.service.AmfRegistrationLogService;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.events.LifecycleEvent;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.PortalUtil;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 @Component(
         immediate = true,
@@ -25,7 +24,7 @@ import java.util.Date;
 )
 public class PostLoginAction  implements LifecycleAction {
 	
-	private AmfRegistrationLogLocalService amfRegistrationLogLocalService;
+	private AmfRegistrationLogService amfRegistrationLogService;
 	/**
 	 * Creates a log for the login action.
 	 */
@@ -46,7 +45,7 @@ public class PostLoginAction  implements LifecycleAction {
 
             log.setUserId(user.getUserId());
 
-            amfRegistrationLogLocalService.addLog(log);
+            amfRegistrationLogService.addLog(log);
 
         } catch (PortalException e) {
             e.printStackTrace();
@@ -54,8 +53,8 @@ public class PostLoginAction  implements LifecycleAction {
     }
     
     @Reference(unbind = "-")
-    protected void setAmfRegistrationLogService(AmfRegistrationLogLocalService amfRegistrationLogLocalService) {
-    	this.amfRegistrationLogLocalService = amfRegistrationLogLocalService;
+    protected void setAmfRegistrationLogService(AmfRegistrationLogService amfRegistrationLogService) {
+    	this.amfRegistrationLogService = amfRegistrationLogService;
     }
 
 }

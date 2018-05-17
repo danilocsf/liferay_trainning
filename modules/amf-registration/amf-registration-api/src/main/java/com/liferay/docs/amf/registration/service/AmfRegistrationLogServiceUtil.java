@@ -43,6 +43,83 @@ public class AmfRegistrationLogServiceUtil {
 	 */
 
 	/**
+	* Saves log informations
+	*
+	* @param AmfRegistrationLogDTO - log data
+	*/
+	public static void addLog(
+		com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO log)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addLog(log);
+	}
+
+	/**
+	* Gets the quantity of logs of the logged user if the user does not have permission to view logs from all users.
+	* Otherwise, gets the quantity of logs of all users.
+	*
+	* @param ServiceContext
+	* @return quantity of logs of the current user or of all users, according the user permission.
+	* @throws PortalException
+	*/
+	public static int countAllLogs(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().countAllLogs(serviceContext);
+	}
+
+	/**
+	* Gets the quantity of logs of the logged user and a specific event type if the user does not have permission to view logs from all users.
+	* Otherwise, gets the quantity of logs of all users and specific event type.
+	*
+	* @param ServiceContext
+	* @param event type
+	* @return quantity of logs of the current user or of all users, according the user permission.
+	* @throws PortalException
+	*/
+	public static int countLogsByEventType(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		java.lang.String eventType)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().countLogsByEventType(serviceContext, eventType);
+	}
+
+	/**
+	* Searches all logs of the logged user if the user does not have permission to view logs from all users.
+	* Otherwise, searches all logs of all users.
+	*
+	* @param ServiceContext
+	* @param start log position in database
+	* @param end log position in database
+	* @return list with founded logs
+	* @throws PortalException
+	*/
+	public static java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findAllLogs(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().findAllLogs(serviceContext, start, end);
+	}
+
+	/**
+	* Searches all logs of the logged user and informed event type if the user does not have permission to view logs from all users.
+	* Otherwise, searches all logs of all users and informed event type.
+	*
+	* @param ServiceContext
+	* @param eventType
+	* @param start log position in database
+	* @param end log position in database
+	* @return list with founded logs
+	* @throws PortalException
+	*/
+	public static java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO> findLogByEventType(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		java.lang.String eventType, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .findLogByEventType(serviceContext, eventType, start, end);
+	}
+
+	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier

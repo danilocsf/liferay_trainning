@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Provides the local service interface for AmfRegistration. Methods of this
@@ -48,10 +48,25 @@ public interface AmfRegistrationLocalService extends BaseLocalService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AmfRegistrationLocalServiceUtil} to access the amf registration local service. Add custom service methods to {@link com.liferay.docs.amf.registration.service.impl.AmfRegistrationLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+
+	/**
+	* Gets the number of saved users with the informed zip code.
+	*
+	* @param zip code
+	* @return number of saved users with the informed zip code.
+	*/
 	public int countUserAddressByZip(java.lang.String zip);
 
-	public java.util.List<AmfRegistrationDTO> findUserByZip(
-		java.lang.String zip, int start, int delta);
+	/**
+	* Gets data from users with the informed zip code.
+	*
+	* @param zip code
+	* @param int - start position to find data in database
+	* @param int - max number of register to be returned
+	* @return list of users
+	*/
+	public List<AmfRegistrationDTO> findUserByZip(java.lang.String zip,
+		int start, int delta);
 
 	/**
 	* Returns the OSGi service identifier.
@@ -60,6 +75,13 @@ public interface AmfRegistrationLocalService extends BaseLocalService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
+	/**
+	* Validates and saves a new user account.
+	*
+	* @param AmfRegistrationDTO - data to be saved
+	* @param ServiceContext
+	* @throws PortalException - if validation errors occurs
+	*/
 	public void saveUserRegister(AmfRegistrationDTO userData,
 		ServiceContext serviceContext) throws PortalException;
 }

@@ -92,25 +92,6 @@ public abstract class AmfRegistrationLogServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the amf registration log local service.
-	 *
-	 * @return the amf registration log local service
-	 */
-	public com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalService getAmfRegistrationLogLocalService() {
-		return amfRegistrationLogLocalService;
-	}
-
-	/**
-	 * Sets the amf registration log local service.
-	 *
-	 * @param amfRegistrationLogLocalService the amf registration log local service
-	 */
-	public void setAmfRegistrationLogLocalService(
-		com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalService amfRegistrationLogLocalService) {
-		this.amfRegistrationLogLocalService = amfRegistrationLogLocalService;
-	}
-
-	/**
 	 * Returns the amf registration log remote service.
 	 *
 	 * @return the amf registration log remote service
@@ -351,8 +332,6 @@ public abstract class AmfRegistrationLogServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.docs.amf.registration.service.AmfRegistrationLocalService amfRegistrationLocalService;
 	@BeanReference(type = com.liferay.docs.amf.registration.service.AmfRegistrationService.class)
 	protected com.liferay.docs.amf.registration.service.AmfRegistrationService amfRegistrationService;
-	@BeanReference(type = com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalService.class)
-	protected com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalService amfRegistrationLogLocalService;
 	@BeanReference(type = AmfRegistrationLogService.class)
 	protected AmfRegistrationLogService amfRegistrationLogService;
 	@BeanReference(type = AmfRegistrationLogPersistence.class)

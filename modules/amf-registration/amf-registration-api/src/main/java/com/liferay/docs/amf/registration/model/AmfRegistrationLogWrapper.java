@@ -244,11 +244,6 @@ public class AmfRegistrationLogWrapper implements AmfRegistrationLog,
 		return _amfRegistrationLog.isNew();
 	}
 
-	@Override
-	public void persist() {
-		_amfRegistrationLog.persist();
-	}
-
 	/**
 	* Sets the additional info of this amf registration log.
 	*

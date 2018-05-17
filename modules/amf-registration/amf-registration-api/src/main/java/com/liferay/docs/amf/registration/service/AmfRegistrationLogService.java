@@ -16,14 +16,19 @@ package com.liferay.docs.amf.registration.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
 
 /**
  * Provides the remote service interface for AmfRegistrationLog. Methods of this
@@ -49,6 +54,65 @@ public interface AmfRegistrationLogService extends BaseService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AmfRegistrationLogServiceUtil} to access the amf registration log remote service. Add custom service methods to {@link com.liferay.docs.amf.registration.service.impl.AmfRegistrationLogServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+
+	/**
+	* Saves log informations
+	*
+	* @param AmfRegistrationLogDTO - log data
+	*/
+	public void addLog(AmfRegistrationLogDTO log) throws PortalException;
+
+	/**
+	* Gets the quantity of logs of the logged user if the user does not have permission to view logs from all users.
+	* Otherwise, gets the quantity of logs of all users.
+	*
+	* @param ServiceContext
+	* @return quantity of logs of the current user or of all users, according the user permission.
+	* @throws PortalException
+	*/
+	public int countAllLogs(ServiceContext serviceContext)
+		throws PortalException;
+
+	/**
+	* Gets the quantity of logs of the logged user and a specific event type if the user does not have permission to view logs from all users.
+	* Otherwise, gets the quantity of logs of all users and specific event type.
+	*
+	* @param ServiceContext
+	* @param event type
+	* @return quantity of logs of the current user or of all users, according the user permission.
+	* @throws PortalException
+	*/
+	public int countLogsByEventType(ServiceContext serviceContext,
+		java.lang.String eventType) throws PortalException;
+
+	/**
+	* Searches all logs of the logged user if the user does not have permission to view logs from all users.
+	* Otherwise, searches all logs of all users.
+	*
+	* @param ServiceContext
+	* @param start log position in database
+	* @param end log position in database
+	* @return list with founded logs
+	* @throws PortalException
+	*/
+	public List<AmfRegistrationLogDTO> findAllLogs(
+		ServiceContext serviceContext, int start, int end)
+		throws PortalException;
+
+	/**
+	* Searches all logs of the logged user and informed event type if the user does not have permission to view logs from all users.
+	* Otherwise, searches all logs of all users and informed event type.
+	*
+	* @param ServiceContext
+	* @param eventType
+	* @param start log position in database
+	* @param end log position in database
+	* @return list with founded logs
+	* @throws PortalException
+	*/
+	public List<AmfRegistrationLogDTO> findLogByEventType(
+		ServiceContext serviceContext, java.lang.String eventType, int start,
+		int end) throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.

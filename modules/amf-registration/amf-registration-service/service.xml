@@ -12,7 +12,7 @@
   		
 	</entity>
 
-    <entity name="AmfRegistrationLog" table="AMF_REGISTRATION_LOG" local-service="true">
+    <entity name="AmfRegistrationLog" table="AMF_REGISTRATION_LOG" remote-service="true">
         <column name="logId" type="long" primary="true" id-type="increment"/>
         <column name="dateTime" type="Date" />
         <column name="screenName" type="String" />

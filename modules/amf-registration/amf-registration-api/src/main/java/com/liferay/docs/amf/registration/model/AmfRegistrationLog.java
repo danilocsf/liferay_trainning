@@ -17,7 +17,6 @@ package com.liferay.docs.amf.registration.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.annotation.ImplementationClassName;
-import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.Accessor;
 
 /**
@@ -31,8 +30,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.docs.amf.registration.model.impl.AmfRegistrationLogImpl")
 @ProviderType
-public interface AmfRegistrationLog extends AmfRegistrationLogModel,
-	PersistedModel {
+public interface AmfRegistrationLog extends AmfRegistrationLogModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *

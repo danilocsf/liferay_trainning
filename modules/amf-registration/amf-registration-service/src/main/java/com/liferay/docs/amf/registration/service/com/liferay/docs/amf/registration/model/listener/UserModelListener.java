@@ -1,19 +1,18 @@
 package com.liferay.docs.amf.registration.service.com.liferay.docs.amf.registration.model.listener;
 
+import java.util.Date;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 import com.liferay.docs.amf.registration.constants.AmfRegistrationLogConstants;
 import com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO;
-import com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalService;
-import com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalServiceUtil;
-import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationLogUtil;
+import com.liferay.docs.amf.registration.service.AmfRegistrationLogService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
-import java.util.Date;
 
 @Component(
         immediate = true,
@@ -21,7 +20,7 @@ import java.util.Date;
 )
 public class UserModelListener extends BaseModelListener<User> {
 
-	private AmfRegistrationLogLocalService amfRegistrationLogLocalService;
+	private AmfRegistrationLogService amfRegistrationLogService;
 	
 	/**
 	 * Creates a log for the user registration.
@@ -35,15 +34,15 @@ public class UserModelListener extends BaseModelListener<User> {
         log.setUserId(user.getUserId());
 
         try {
-        	amfRegistrationLogLocalService.addLog(log);
+        	amfRegistrationLogService.addLog(log);
         } catch (PortalException e) {
             e.printStackTrace();
         }
     }
     
     @Reference(unbind = "-")
-    protected void setAmfRegistrationLogService(AmfRegistrationLogLocalService amfRegistrationLogLocalService) {
-    	this.amfRegistrationLogLocalService = amfRegistrationLogLocalService;
+    protected void setAmfRegistrationLogService(AmfRegistrationLogService amfRegistrationLogService) {
+    	this.amfRegistrationLogService = amfRegistrationLogService;
     }
 
 }

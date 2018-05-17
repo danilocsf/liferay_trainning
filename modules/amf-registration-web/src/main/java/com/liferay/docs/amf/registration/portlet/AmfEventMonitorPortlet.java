@@ -1,19 +1,11 @@
 package com.liferay.docs.amf.registration.portlet;
 
-import com.liferay.docs.amf.registration.constants.AmfRegistrationPortletKeys;
-import com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO;
-import com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalServiceUtil;
-import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationLogUtil;
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.theme.PortletDisplay;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.WebKeys;
+import javax.portlet.Portlet;
+
 import org.osgi.service.component.annotations.Component;
 
-import javax.portlet.*;
-import java.io.IOException;
+import com.liferay.docs.amf.registration.constants.AmfRegistrationPortletKeys;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 /**
  * @author danilo-ferreira
@@ -34,30 +26,5 @@ import java.io.IOException;
 )
 public class AmfEventMonitorPortlet extends MVCPortlet {
 
-    Boolean hasPermissionToViewAllUser = null;
-
-    @Override
-    public void render(RenderRequest request, RenderResponse response)
-        throws PortletException, IOException {
-    	
-        if(this.hasPermissionToViewAllUser == null){
-            this.hasPermissionToViewAllUser = checkViewAllUsersPermission(request);            
-        }
-        PortletSession session = request.getPortletSession();
-        session.setAttribute("hasPermissionToViewAllUser", this.hasPermissionToViewAllUser, PortletSession.APPLICATION_SCOPE);
-        super.render(request, response);       
-       
-    }
-    /**
-     * Checks whether the current user has permission to view log informations for all users.
-     * @param request
-     * @return
-     */
-    private boolean checkViewAllUsersPermission(RenderRequest request) {
-
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-        PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-        return permissionChecker.hasPermission(themeDisplay.getScopeGroupId(), portletDisplay.getRootPortletId(), portletDisplay.getResourcePK(), AmfRegistrationPortletKeys.VIEW_ALL_USER_PERMISSION);
-    }
+    
 }

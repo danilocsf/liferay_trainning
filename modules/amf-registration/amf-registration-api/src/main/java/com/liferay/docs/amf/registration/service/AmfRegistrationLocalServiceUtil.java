@@ -41,10 +41,25 @@ public class AmfRegistrationLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.docs.amf.registration.service.impl.AmfRegistrationLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+
+	/**
+	* Gets the number of saved users with the informed zip code.
+	*
+	* @param zip code
+	* @return number of saved users with the informed zip code.
+	*/
 	public static int countUserAddressByZip(java.lang.String zip) {
 		return getService().countUserAddressByZip(zip);
 	}
 
+	/**
+	* Gets data from users with the informed zip code.
+	*
+	* @param zip code
+	* @param int - start position to find data in database
+	* @param int - max number of register to be returned
+	* @return list of users
+	*/
 	public static java.util.List<com.liferay.docs.amf.registration.dto.AmfRegistrationDTO> findUserByZip(
 		java.lang.String zip, int start, int delta) {
 		return getService().findUserByZip(zip, start, delta);
@@ -59,6 +74,13 @@ public class AmfRegistrationLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	/**
+	* Validates and saves a new user account.
+	*
+	* @param AmfRegistrationDTO - data to be saved
+	* @param ServiceContext
+	* @throws PortalException - if validation errors occurs
+	*/
 	public static void saveUserRegister(
 		com.liferay.docs.amf.registration.dto.AmfRegistrationDTO userData,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
