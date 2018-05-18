@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
 <model-hints>
+	<model name="com.liferay.docs.amf.registration.model.AmfRegistration">
+		<field name="fakeAttribute" type="String" />
+	</model>
 	<model name="com.liferay.docs.amf.registration.model.AmfRegistrationLog">
 		<field name="logId" type="long" />
 		<field name="dateTime" type="Date" />

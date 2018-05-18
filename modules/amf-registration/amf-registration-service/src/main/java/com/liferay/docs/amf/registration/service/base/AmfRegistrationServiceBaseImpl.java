@@ -14,8 +14,11 @@
 
 package com.liferay.docs.amf.registration.service.base;
 
+import com.liferay.docs.amf.registration.model.AmfRegistration;
 import com.liferay.docs.amf.registration.service.AmfRegistrationService;
+import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationFinder;
 import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationLogPersistence;
+import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -29,7 +32,6 @@ import com.liferay.portal.kernel.service.persistence.AddressPersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -91,6 +93,44 @@ public abstract class AmfRegistrationServiceBaseImpl extends BaseServiceImpl
 	public void setAmfRegistrationService(
 		AmfRegistrationService amfRegistrationService) {
 		this.amfRegistrationService = amfRegistrationService;
+	}
+
+	/**
+	 * Returns the amf registration persistence.
+	 *
+	 * @return the amf registration persistence
+	 */
+	public AmfRegistrationPersistence getAmfRegistrationPersistence() {
+		return amfRegistrationPersistence;
+	}
+
+	/**
+	 * Sets the amf registration persistence.
+	 *
+	 * @param amfRegistrationPersistence the amf registration persistence
+	 */
+	public void setAmfRegistrationPersistence(
+		AmfRegistrationPersistence amfRegistrationPersistence) {
+		this.amfRegistrationPersistence = amfRegistrationPersistence;
+	}
+
+	/**
+	 * Returns the amf registration finder.
+	 *
+	 * @return the amf registration finder
+	 */
+	public AmfRegistrationFinder getAmfRegistrationFinder() {
+		return amfRegistrationFinder;
+	}
+
+	/**
+	 * Sets the amf registration finder.
+	 *
+	 * @param amfRegistrationFinder the amf registration finder
+	 */
+	public void setAmfRegistrationFinder(
+		AmfRegistrationFinder amfRegistrationFinder) {
+		this.amfRegistrationFinder = amfRegistrationFinder;
 	}
 
 	/**
@@ -410,6 +450,14 @@ public abstract class AmfRegistrationServiceBaseImpl extends BaseServiceImpl
 		return AmfRegistrationService.class.getName();
 	}
 
+	protected Class<?> getModelClass() {
+		return AmfRegistration.class;
+	}
+
+	protected String getModelClassName() {
+		return AmfRegistration.class.getName();
+	}
+
 	/**
 	 * Performs a SQL query.
 	 *
@@ -417,7 +465,7 @@ public abstract class AmfRegistrationServiceBaseImpl extends BaseServiceImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = InfrastructureUtil.getDataSource();
+			DataSource dataSource = amfRegistrationPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
@@ -438,6 +486,10 @@ public abstract class AmfRegistrationServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.docs.amf.registration.service.AmfRegistrationLocalService amfRegistrationLocalService;
 	@BeanReference(type = AmfRegistrationService.class)
 	protected AmfRegistrationService amfRegistrationService;
+	@BeanReference(type = AmfRegistrationPersistence.class)
+	protected AmfRegistrationPersistence amfRegistrationPersistence;
+	@BeanReference(type = AmfRegistrationFinder.class)
+	protected AmfRegistrationFinder amfRegistrationFinder;
 	@BeanReference(type = com.liferay.docs.amf.registration.service.AmfRegistrationLogService.class)
 	protected com.liferay.docs.amf.registration.service.AmfRegistrationLogService amfRegistrationLogService;
 	@BeanReference(type = AmfRegistrationLogPersistence.class)

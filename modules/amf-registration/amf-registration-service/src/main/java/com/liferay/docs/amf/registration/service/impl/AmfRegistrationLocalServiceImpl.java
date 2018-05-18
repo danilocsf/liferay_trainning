@@ -80,15 +80,9 @@ public class AmfRegistrationLocalServiceImpl
      * @param zip code
      * @return number of saved users with the informed zip code. 
      */
-    public int countUserAddressByZip(String zip){
+    public int countUserAddressByZip(String zip){   
     	
-  		String sql = "SELECT count(*) FROM User_ where userId in (SELECT userId FROM Address where zip = ? and primary_=1)";
-  		Session session = userPersistence.openSession();
-  		SQLQuery sqlQuery = session.createSQLQuery(sql);
-  		QueryPos pos = QueryPos.getInstance(sqlQuery);
-  		pos.add(zip);
-  		BigInteger count = (BigInteger)sqlQuery.uniqueResult(); 
-  		return count.intValue();    	
+    	return amfRegistrationFinder.countUserAddressByZip(zip);
     }   
     
     
@@ -100,36 +94,9 @@ public class AmfRegistrationLocalServiceImpl
      * @return list of users 
      */
     public List<AmfRegistrationDTO> findUserByZip(String zip, int start, int delta){
-    	
-  		String sql = "select u.firstName, u.lastName, u.screenName, u.emailAddress from User_ u "
-  				+ "where u.userId in (SELECT a.userId FROM Address a where a.zip = ? and a.primary_=1) LIMIT ?, ?";
-  		Session session = userPersistence.openSession();
-  		SQLQuery sqlQuery = session.createSQLQuery(sql);
-  		QueryPos pos = QueryPos.getInstance(sqlQuery);
-  		pos.add(zip);
-  		pos.add(start);
-  		pos.add(delta);
-  		List<Object[]> returnedList = (List<Object[]>)sqlQuery.list();  		
-  		return buildAmfRegistrationDTOList(returnedList, zip);    	
-    }   
-    
-    private List<AmfRegistrationDTO> buildAmfRegistrationDTOList(List<Object[]> list, String zip){
-    	List<AmfRegistrationDTO> resultList = new ArrayList<AmfRegistrationDTO>();
-  		
-    	if(list != null){
-  			for(Object[] objs : list){
-  				AmfRegistrationDTO dto = new AmfRegistrationDTO();
-  				dto.setFirstName((String)objs[0]);
-  				dto.setLastName((String)objs[1]);
-  				dto.setUserName((String)objs[2]);
-  				dto.setEmail((String)objs[3]);
-  				dto.setZipCode(zip);
-  				resultList.add(dto);  				
-  			}
-  		}
-    	return resultList;
+    	return amfRegistrationFinder.findUserByZip(zip, start, delta);    	
     }
-        
+           
     /**
      * Creates a new user account. 
      * @param AmfRegistrationDTO - object containing the user data

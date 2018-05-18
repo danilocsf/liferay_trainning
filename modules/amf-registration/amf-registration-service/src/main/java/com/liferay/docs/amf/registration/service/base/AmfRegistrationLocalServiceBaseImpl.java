@@ -16,24 +16,39 @@ package com.liferay.docs.amf.registration.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.docs.amf.registration.model.AmfRegistration;
 import com.liferay.docs.amf.registration.service.AmfRegistrationLocalService;
+import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationFinder;
 import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationLogPersistence;
+import com.liferay.docs.amf.registration.service.persistence.AmfRegistrationPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.Projection;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
+import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.AddressPersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.util.InfrastructureUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -60,6 +75,213 @@ public abstract class AmfRegistrationLocalServiceBaseImpl
 	 */
 
 	/**
+	 * Adds the amf registration to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param amfRegistration the amf registration
+	 * @return the amf registration that was added
+	 */
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public AmfRegistration addAmfRegistration(AmfRegistration amfRegistration) {
+		amfRegistration.setNew(true);
+
+		return amfRegistrationPersistence.update(amfRegistration);
+	}
+
+	/**
+	 * Creates a new amf registration with the primary key. Does not add the amf registration to the database.
+	 *
+	 * @param fakeAttribute the primary key for the new amf registration
+	 * @return the new amf registration
+	 */
+	@Override
+	public AmfRegistration createAmfRegistration(String fakeAttribute) {
+		return amfRegistrationPersistence.create(fakeAttribute);
+	}
+
+	/**
+	 * Deletes the amf registration with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param fakeAttribute the primary key of the amf registration
+	 * @return the amf registration that was removed
+	 * @throws PortalException if a amf registration with the primary key could not be found
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public AmfRegistration deleteAmfRegistration(String fakeAttribute)
+		throws PortalException {
+		return amfRegistrationPersistence.remove(fakeAttribute);
+	}
+
+	/**
+	 * Deletes the amf registration from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param amfRegistration the amf registration
+	 * @return the amf registration that was removed
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public AmfRegistration deleteAmfRegistration(
+		AmfRegistration amfRegistration) {
+		return amfRegistrationPersistence.remove(amfRegistration);
+	}
+
+	@Override
+	public DynamicQuery dynamicQuery() {
+		Class<?> clazz = getClass();
+
+		return DynamicQueryFactoryUtil.forClass(AmfRegistration.class,
+			clazz.getClassLoader());
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
+	@Override
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
+		return amfRegistrationPersistence.findWithDynamicQuery(dynamicQuery);
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.docs.amf.registration.model.impl.AmfRegistrationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
+	@Override
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return amfRegistrationPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.docs.amf.registration.model.impl.AmfRegistrationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
+	@Override
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return amfRegistrationPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Override
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
+		return amfRegistrationPersistence.countWithDynamicQuery(dynamicQuery);
+	}
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Override
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return amfRegistrationPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
+	}
+
+	@Override
+	public AmfRegistration fetchAmfRegistration(String fakeAttribute) {
+		return amfRegistrationPersistence.fetchByPrimaryKey(fakeAttribute);
+	}
+
+	/**
+	 * Returns the amf registration with the primary key.
+	 *
+	 * @param fakeAttribute the primary key of the amf registration
+	 * @return the amf registration
+	 * @throws PortalException if a amf registration with the primary key could not be found
+	 */
+	@Override
+	public AmfRegistration getAmfRegistration(String fakeAttribute)
+		throws PortalException {
+		return amfRegistrationPersistence.findByPrimaryKey(fakeAttribute);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return amfRegistrationLocalService.deleteAmfRegistration((AmfRegistration)persistedModel);
+	}
+
+	@Override
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+		return amfRegistrationPersistence.findByPrimaryKey(primaryKeyObj);
+	}
+
+	/**
+	 * Returns a range of all the amf registrations.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.docs.amf.registration.model.impl.AmfRegistrationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of amf registrations
+	 * @param end the upper bound of the range of amf registrations (not inclusive)
+	 * @return the range of amf registrations
+	 */
+	@Override
+	public List<AmfRegistration> getAmfRegistrations(int start, int end) {
+		return amfRegistrationPersistence.findAll(start, end);
+	}
+
+	/**
+	 * Returns the number of amf registrations.
+	 *
+	 * @return the number of amf registrations
+	 */
+	@Override
+	public int getAmfRegistrationsCount() {
+		return amfRegistrationPersistence.countAll();
+	}
+
+	/**
+	 * Updates the amf registration in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param amfRegistration the amf registration
+	 * @return the amf registration that was updated
+	 */
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public AmfRegistration updateAmfRegistration(
+		AmfRegistration amfRegistration) {
+		return amfRegistrationPersistence.update(amfRegistration);
+	}
+
+	/**
 	 * Returns the amf registration local service.
 	 *
 	 * @return the amf registration local service
@@ -76,6 +298,44 @@ public abstract class AmfRegistrationLocalServiceBaseImpl
 	public void setAmfRegistrationLocalService(
 		AmfRegistrationLocalService amfRegistrationLocalService) {
 		this.amfRegistrationLocalService = amfRegistrationLocalService;
+	}
+
+	/**
+	 * Returns the amf registration persistence.
+	 *
+	 * @return the amf registration persistence
+	 */
+	public AmfRegistrationPersistence getAmfRegistrationPersistence() {
+		return amfRegistrationPersistence;
+	}
+
+	/**
+	 * Sets the amf registration persistence.
+	 *
+	 * @param amfRegistrationPersistence the amf registration persistence
+	 */
+	public void setAmfRegistrationPersistence(
+		AmfRegistrationPersistence amfRegistrationPersistence) {
+		this.amfRegistrationPersistence = amfRegistrationPersistence;
+	}
+
+	/**
+	 * Returns the amf registration finder.
+	 *
+	 * @return the amf registration finder
+	 */
+	public AmfRegistrationFinder getAmfRegistrationFinder() {
+		return amfRegistrationFinder;
+	}
+
+	/**
+	 * Sets the amf registration finder.
+	 *
+	 * @param amfRegistrationFinder the amf registration finder
+	 */
+	public void setAmfRegistrationFinder(
+		AmfRegistrationFinder amfRegistrationFinder) {
+		this.amfRegistrationFinder = amfRegistrationFinder;
 	}
 
 	/**
@@ -285,9 +545,13 @@ public abstract class AmfRegistrationLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		persistedModelLocalServiceRegistry.register("com.liferay.docs.amf.registration.model.AmfRegistration",
+			amfRegistrationLocalService);
 	}
 
 	public void destroy() {
+		persistedModelLocalServiceRegistry.unregister(
+			"com.liferay.docs.amf.registration.model.AmfRegistration");
 	}
 
 	/**
@@ -300,6 +564,14 @@ public abstract class AmfRegistrationLocalServiceBaseImpl
 		return AmfRegistrationLocalService.class.getName();
 	}
 
+	protected Class<?> getModelClass() {
+		return AmfRegistration.class;
+	}
+
+	protected String getModelClassName() {
+		return AmfRegistration.class.getName();
+	}
+
 	/**
 	 * Performs a SQL query.
 	 *
@@ -307,7 +579,7 @@ public abstract class AmfRegistrationLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = InfrastructureUtil.getDataSource();
+			DataSource dataSource = amfRegistrationPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
@@ -326,6 +598,10 @@ public abstract class AmfRegistrationLocalServiceBaseImpl
 
 	@BeanReference(type = AmfRegistrationLocalService.class)
 	protected AmfRegistrationLocalService amfRegistrationLocalService;
+	@BeanReference(type = AmfRegistrationPersistence.class)
+	protected AmfRegistrationPersistence amfRegistrationPersistence;
+	@BeanReference(type = AmfRegistrationFinder.class)
+	protected AmfRegistrationFinder amfRegistrationFinder;
 	@BeanReference(type = AmfRegistrationLogPersistence.class)
 	protected AmfRegistrationLogPersistence amfRegistrationLogPersistence;
 	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
@@ -348,4 +624,6 @@ public abstract class AmfRegistrationLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

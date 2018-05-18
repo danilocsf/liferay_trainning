@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<custom-sql>
+    <sql id="com.liferay.docs.amf.registration.service.persistence.AmfRegistrationFinder.countUserAddressByZip">
+        SELECT count(*) 
+        FROM User_ 
+        where userId in (SELECT userId FROM Address where zip = ? and primary_=1)
+    </sql>
+    <sql id="com.liferay.docs.amf.registration.service.persistence.AmfRegistrationFinder.findUserByZip">    
+        SELECT u.firstName, u.lastName, u.screenName, u.emailAddress 
+        FROM User_ u
+  		where u.userId in (SELECT a.userId FROM Address a where a.zip = ? and a.primary_=1) LIMIT ?, ?
+    </sql>
+</custom-sql>

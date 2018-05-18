@@ -6,6 +6,13 @@
     <namespace>AR</namespace>
 
     <entity local-service="true" name="AmfRegistration">
+    	<!-- 
+    		In order to create a Custom Finder, this fake attribute is needed due serviceBuilder. 
+    		Custom Finders rely on classes that are only generated when Service Builder builds the 
+    		persistence layer of an entity. 
+    		If there are no columns defined to be persisted then Service Builder doesn't generate those classes.-->    		
+    	
+    	<column name="fakeAttribute" type="String"  primary="true" id-type="increment"/>  	
 		<reference entity="User" package-path="com.liferay.portal" />
 		<reference entity="Address" package-path="com.liferay.portal" />
 		<reference entity="Phone" package-path="com.liferay.portal" />
